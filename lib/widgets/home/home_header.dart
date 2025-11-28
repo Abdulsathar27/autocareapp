@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../constants/app_colors.dart';
+import '../../providers/user_provider.dart';
+import 'package:provider/provider.dart';
+
+class HomeHeader extends StatelessWidget {
+  const HomeHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: 24,
+          backgroundColor: AppColors.iconBgGreen,
+          child: user?.profileImage == null
+              ? const Icon(Icons.person,
+                  color: AppColors.primaryGreen, size: 28)
+              : ClipOval(
+                  child: Image.network(
+                    user!.profileImage!,
+                    width: 48,
+                    height: 48,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(
+                      Icons.person,
+                      color: AppColors.primaryGreen,
+                      size: 28,
+                    ),
+                  ),
+                ),
+        ),
+        const SizedBox(width: 12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Welcome,",
+              style: GoogleFonts.poppins(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+            ),
+            Text(
+              user?.name ?? "User",
+              style: GoogleFonts.poppins(
+                color: AppColors.textPrimary,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
