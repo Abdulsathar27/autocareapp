@@ -61,7 +61,7 @@ class BookingContinueButton extends StatelessWidget {
           Helpers.showSnackBar(
             context,
             "Invalid date format",
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.redButton,
           );
           return;
         }

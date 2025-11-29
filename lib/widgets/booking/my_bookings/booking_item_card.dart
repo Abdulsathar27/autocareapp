@@ -27,7 +27,7 @@ class BookingItemCard extends StatelessWidget {
     final service = data[FirebaseKeys.serviceId] ?? "Service";
 
     // -------------------------
-    // DATE (safe for Timestamp OR DateTime OR null)
+    // DATE (timestamp or datetime)
     // -------------------------
     DateTime? rawDate;
 
@@ -38,29 +38,28 @@ class BookingItemCard extends StatelessWidget {
     }
 
     final date = rawDate != null
-        ? "${rawDate.year}-${rawDate.month.toString().padLeft(2, '0')}-${rawDate.day.toString().padLeft(2, '0')}"
+        ? "${rawDate.day.toString().padLeft(2, '0')}-${rawDate.month.toString().padLeft(2, '0')}-${rawDate.year}"
         : "-";
 
     // -------------------------
-    // TIME (safe)
+    // TIME
     // -------------------------
     final time = data['bookingTime'] ?? "-";
 
     // -------------------------
-    // STATUS (safe)
+    // STATUS
     // -------------------------
     final status = data['bookingStatus'] ?? "pending";
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(AppSizes.radiusLG),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
+            color: AppColors.textPrimary.withValues(alpha: 0.05),
+            blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
@@ -69,31 +68,117 @@ class BookingItemCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // SERVICE TITLE
-          Text(
-            service,
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+          // -------------------------
+          // TOP GRADIENT BAR
+          // -------------------------
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primaryGreen.withValues(alpha: 0.9),
+                  AppColors.primaryGreen.withValues(alpha: 0.6),
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(AppSizes.radiusLG),
+                topRight: Radius.circular(AppSizes.radiusLG),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.miscellaneous_services,
+                  color: AppColors.background,
+                  size: 24,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    service,
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.background,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 6),
 
-          // DATE & TIME
-          Text(
-            "$date • $time",
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              color: AppColors.textSecondary,
+          // -------------------------
+          // DETAILS SECTION
+          // -------------------------
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                _infoRow(Icons.calendar_month, "Date", date),
+                const SizedBox(height: 12),
+                _infoRow(Icons.access_time, "Time", time),
+                const SizedBox(height: 12),
+                _infoRow(
+                  Icons.badge,
+                  "Status",
+                  null,
+                  trailing: BookingStatusChip(status: status),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 12),
-
-          // STATUS CHIP
-          BookingStatusChip(status: status),
         ],
       ),
+    );
+  }
+
+  // -------------------------------------------------------
+  // REUSABLE ROW WIDGET
+  // -------------------------------------------------------
+  Widget _infoRow(
+    IconData icon,
+    String label,
+    String? value, {
+    Widget? trailing,
+  }) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: AppColors.iconBgGreen,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: AppColors.primaryGreen, size: AppSizes.iconMD1),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              if (value != null)
+                Text(
+                  value,
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        if (trailing != null) trailing,
+      ],
     );
   }
 }

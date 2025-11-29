@@ -1,4 +1,4 @@
-// lib/widgets/my_bookings/booking_status_chip.dart
+import 'package:autocare/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class BookingStatusChip extends StatelessWidget {
@@ -6,27 +6,14 @@ class BookingStatusChip extends StatelessWidget {
 
   const BookingStatusChip({super.key, required this.status});
 
-  Color _chipColor() {
-    switch (status) {
-      case "confirmed":
-        return Colors.green;
-      case "completed":
-        return Colors.blue;
-      case "cancelled":
-        return Colors.red;
-      default:
-        return Colors.orange;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Chip(
-      label: Text(
-        status.toUpperCase(),
-        style: const TextStyle(color: Colors.white),
+      label: const Text(
+        "CONFIRMED",
+        style: TextStyle(color: AppColors.background, fontWeight: FontWeight.w600),
       ),
-      backgroundColor: _chipColor(),
+      backgroundColor: AppColors.primaryGreen,
     );
   }
 }

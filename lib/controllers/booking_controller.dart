@@ -1,3 +1,4 @@
+// lib/controllers/booking_controller.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -9,9 +10,9 @@ import '../core/utils/helpers.dart';
 class BookingController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // -------------------------------------------------------------
-  // CREATE BOOKING  ✅ FIXED
-  // -------------------------------------------------------------
+  // ----------------------------------------------------------------
+  // CREATE BOOKING (NOW WITH UNIQUE BOOKING ID → NO DUPLICATES)
+  // ----------------------------------------------------------------
   Future<void> createBooking({
     required BuildContext context,
     required String userId,
@@ -24,20 +25,30 @@ class BookingController {
     try {
       provider.setLoading(true);
 
-      final docRef = _firestore.collection(FirebaseKeys.bookings).doc();
+      // -----------------------------------------------------------
+      // 🔥 UNIQUE BOOKING ID — FIXES DUPLICATE BOOKINGS
+      // Format: user_vehicle_date
+      // Example: "uid123_veh88_2025-01-01T10:00:00"
+      // -----------------------------------------------------------
+      final bookingId =
+          "${userId}_${vehicleId}_${bookingDate.toIso8601String()}";
 
-      await docRef.set({
-        FirebaseKeys.userId: userId,
-        FirebaseKeys.vehicleId: vehicleId,
-        FirebaseKeys.serviceId: serviceId,
-        FirebaseKeys.bookingDate: bookingDate,
-        FirebaseKeys.bookingTime: bookingTime,
-        FirebaseKeys.bookingStatus: FirebaseKeys.statusPending,
+      final docRef =
+          _firestore.collection(FirebaseKeys.bookings).doc(bookingId);
 
-        // ⚠️ FIX: serverTimestamp replaced with DateTime.now()
-        FirebaseKeys.createdAt: DateTime.now(),
-        FirebaseKeys.updatedAt: DateTime.now(),
-      });
+      await docRef.set(
+        {
+          FirebaseKeys.userId: userId,
+          FirebaseKeys.vehicleId: vehicleId,
+          FirebaseKeys.serviceId: serviceId,
+          FirebaseKeys.bookingDate: bookingDate,
+          FirebaseKeys.bookingTime: bookingTime,
+          FirebaseKeys.bookingStatus: FirebaseKeys.statusPending,
+          FirebaseKeys.createdAt: FieldValue.serverTimestamp(),
+          FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true), // 🔥 Prevents duplicate documents
+      );
 
       if (context.mounted) {
         Helpers.showSnackBar(context, "Booking Successful!");
@@ -46,7 +57,7 @@ class BookingController {
       if (context.mounted) {
         Helpers.showSnackBar(
           context,
-          e.toString(),
+          "Error: $e",
           backgroundColor: Colors.red,
         );
       }
@@ -55,9 +66,9 @@ class BookingController {
     }
   }
 
-  // -------------------------------------------------------------
-  // FETCH BOOKINGS FOR USER
-  // -------------------------------------------------------------
+  // ----------------------------------------------------------------
+  // STREAM USER BOOKINGS
+  // ----------------------------------------------------------------
   Stream<List<BookingModel>> getUserBookings(String userId) {
     return _firestore
         .collection(FirebaseKeys.bookings)
@@ -71,9 +82,9 @@ class BookingController {
         );
   }
 
-  // -------------------------------------------------------------
-  // FETCH ALL BOOKINGS (ADMIN)
-  // -------------------------------------------------------------
+  // ----------------------------------------------------------------
+  // ADMIN: FETCH ALL BOOKINGS
+  // ----------------------------------------------------------------
   Stream<List<BookingModel>> getAllBookings() {
     return _firestore
         .collection(FirebaseKeys.bookings)
@@ -86,31 +97,39 @@ class BookingController {
         );
   }
 
-  // UPDATE STATUS
+  // ----------------------------------------------------------------
+  // UPDATE BOOKING STATUS
+  // ----------------------------------------------------------------
   Future<void> updateBookingStatus({
     required String bookingId,
     required String newStatus,
   }) async {
     await _firestore.collection(FirebaseKeys.bookings).doc(bookingId).update({
       FirebaseKeys.bookingStatus: newStatus,
-      FirebaseKeys.updatedAt: DateTime.now(),
+      FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
     });
   }
 
+  // ----------------------------------------------------------------
+  // ADD ADMIN NOTE
+  // ----------------------------------------------------------------
   Future<void> addAdminNote({
     required String bookingId,
     required String note,
   }) async {
     await _firestore.collection(FirebaseKeys.bookings).doc(bookingId).update({
       FirebaseKeys.adminNote: note,
-      FirebaseKeys.updatedAt: DateTime.now(),
+      FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
     });
   }
 
+  // ----------------------------------------------------------------
+  // CANCEL BOOKING
+  // ----------------------------------------------------------------
   Future<void> cancelBooking(String bookingId) async {
     await _firestore.collection(FirebaseKeys.bookings).doc(bookingId).update({
       FirebaseKeys.bookingStatus: FirebaseKeys.statusCancelled,
-      FirebaseKeys.updatedAt: DateTime.now(),
+      FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
     });
   }
 }

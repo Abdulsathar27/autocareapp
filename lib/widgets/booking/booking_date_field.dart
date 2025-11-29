@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import '../../core/widgets/custom_textfield.dart';
 import '../../constants/app_colors.dart';
@@ -18,7 +19,7 @@ class BookingDateField extends StatelessWidget {
       readOnly: true,
       suffixIcon: const Icon(
         Icons.calendar_month,
-        size: 22,
+        size: AppSizes.iconMD1,
         color: AppColors.primaryGreen,
       ),
 

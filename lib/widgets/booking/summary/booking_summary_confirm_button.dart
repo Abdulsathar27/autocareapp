@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class BookingSummaryConfirmButton extends StatelessWidget {
           Helpers.showSnackBar(
             context,
             "User not logged in!",
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.redButton,
           );
           return;
         }
@@ -34,7 +35,7 @@ class BookingSummaryConfirmButton extends StatelessWidget {
           Helpers.showSnackBar(
             context,
             "Booking data incomplete!",
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.redButton,
           );
           return;
         }

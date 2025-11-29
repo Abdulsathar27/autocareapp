@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
@@ -18,17 +19,17 @@ class HomeHeader extends StatelessWidget {
           backgroundColor: AppColors.iconBgGreen,
           child: user?.profileImage == null
               ? const Icon(Icons.person,
-                  color: AppColors.primaryGreen, size: 28)
+                  color: AppColors.primaryGreen, size: AppSizes.iconLG2)
               : ClipOval(
                   child: Image.network(
                     user!.profileImage!,
                     width: 48,
                     height: 48,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => const Icon(
+                    errorBuilder: (_, _, _) => const Icon(
                       Icons.person,
                       color: AppColors.primaryGreen,
-                      size: 28,
+                      size: AppSizes.iconLG2,
                     ),
                   ),
                 ),

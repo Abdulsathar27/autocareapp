@@ -22,11 +22,11 @@ class ProfileOptionList extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(AppSizes.radiusLG),
         boxShadow: const [
           BoxShadow(
-            color: Colors.black12,
+            color:AppColors.textPrimary,
             blurRadius: 10,
             offset: Offset(0, 4),
           ),

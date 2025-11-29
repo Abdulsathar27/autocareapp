@@ -3,7 +3,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
 
 // Custom widgets
-import '../../widgets/booking/success/booking_success_image.dart';
+
 import '../../widgets/booking/success/booking_success_text.dart';
 import '../../widgets/booking/success/booking_success_button.dart';
 
@@ -22,7 +22,6 @@ class BookingSuccessView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                BookingSuccessImage(),
                 SizedBox(height: 30),
                 BookingSuccessText(),
                 SizedBox(height: 40),

@@ -25,7 +25,7 @@ class BookingServiceTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 14),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.background,
           borderRadius: BorderRadius.circular(AppSizes.radiusLG),
           border: Border.all(
             color: isSelected ? AppColors.primaryGreen : Colors.transparent,
@@ -33,7 +33,7 @@ class BookingServiceTile extends StatelessWidget {
           ),
           boxShadow: const [
             BoxShadow(
-              color: Colors.black26,
+              color: AppColors.textPrimary,
               blurRadius: 10,
               offset: Offset(0, 3),
             ),

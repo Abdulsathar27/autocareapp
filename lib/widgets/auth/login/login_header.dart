@@ -15,7 +15,7 @@ class LoginHeader extends StatelessWidget {
           child: Image.network(
             AppAssets.loginScreen,
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) => const Icon(
+            errorBuilder: (_, _, _) => const Icon(
               Icons.car_crash,
               size: 60,
               color: AppColors.primaryGreen,

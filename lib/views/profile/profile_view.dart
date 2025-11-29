@@ -65,7 +65,7 @@ class ProfileView extends StatelessWidget {
                 Navigator.pushNamedAndRemoveUntil(
                     context, "/login", (_) => false);
                 Helpers.showSnackBar(context, "Logged out",
-                    backgroundColor: Colors.red);
+                    backgroundColor: AppColors.redButton);
               },
             ),
           ],

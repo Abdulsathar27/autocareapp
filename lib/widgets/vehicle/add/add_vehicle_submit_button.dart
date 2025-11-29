@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:autocare/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../controllers/vehicle_controller.dart';
@@ -44,13 +45,13 @@ class AddVehicleSubmitButton extends StatelessWidget {
       onPressed: () async {
         if (!isValid) {
           Helpers.showSnackBar(context, "Please fill all fields",
-              backgroundColor: Colors.red);
+              backgroundColor: AppColors.redButton);
           return;
         }
 
         if (auth.currentUserId == null) {
           Helpers.showSnackBar(
-              context, "User not logged in!", backgroundColor: Colors.red);
+              context, "User not logged in!", backgroundColor: AppColors.redButton);
           return;
         }
 

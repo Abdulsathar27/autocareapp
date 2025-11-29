@@ -16,48 +16,63 @@ class MyBookingsView extends StatelessWidget {
     final userProvider = Provider.of<UserProvider>(context);
     final userId = userProvider.userId;
 
-    // FIX: userId is empty string when no user — not null
     if (userId!.isEmpty) {
       return const BookingEmptyState();
     }
 
     return Scaffold(
       backgroundColor: AppColors.background,
+
+      // ----------------------------
+      // FIXED APPBAR (no dark shade)
+      // ----------------------------
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        elevation: 0.3,
+        elevation: 2,
+        scrolledUnderElevation: 0, // ❌ Disable dark shade on scroll
+        surfaceTintColor: Colors.transparent, // ❌ Prevent tint overlay
+        shadowColor: AppColors.textPrimary.withValues(alpha: 0.08),
         centerTitle: true,
-        title: const Text("My Bookings"),
+        title: const Text(
+          "My Bookings",
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
       ),
 
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection(FirebaseKeys.bookings)
-            .where(FirebaseKeys.userId, isEqualTo: userId)
-            .orderBy(FirebaseKeys.createdAt, descending: true)
-            .snapshots(),
-        builder: (context, snap) {
-          if (snap.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      // ----------------------------
+      // FIX SCROLLING UNDER APPBAR
+      // ----------------------------
+      body: Padding(
+        padding: const EdgeInsets.only(top: 8), // Prevents overlap
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection(FirebaseKeys.bookings)
+              .where(FirebaseKeys.userId, isEqualTo: userId)
+              .orderBy(FirebaseKeys.createdAt, descending: true)
+              .snapshots(),
+          builder: (context, snap) {
+            if (snap.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (!snap.hasData || snap.data!.docs.isEmpty) {
-            return const BookingEmptyState();
-          }
+            if (!snap.hasData || snap.data!.docs.isEmpty) {
+              return const BookingEmptyState();
+            }
 
-          final docs = snap.data!.docs;
+            final docs = snap.data!.docs;
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(AppSizes.paddingMD),
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              return BookingItemCard(
-                data: docs[index].data() as Map<String, dynamic>,
-                bookingId: docs[index].id,
-              );
-            },
-          );
-        },
+            return ListView.builder(
+              padding: const EdgeInsets.all(AppSizes.paddingMD),
+              itemCount: docs.length,
+              itemBuilder: (context, index) {
+                return BookingItemCard(
+                  data: docs[index].data() as Map<String, dynamic>,
+                  bookingId: docs[index].id,
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

@@ -21,7 +21,9 @@ class AppSizes {
 
   // ------------------ Icon Sizes ------------------
   static const double iconSM = 18.0;
+  static const double iconMD1 = 22.0;
   static const double iconMD = 24.0;
+  static const double iconLG2 = 28.0;
   static const double iconLG = 32.0;
   static const double iconXL = 40.0;
 
@@ -31,6 +33,7 @@ class AppSizes {
   static const double fontLG = 18.0;
   static const double fontXL = 22.0;
   static const double fontXXL = 28.0;
+  static const double fontXXXL = 36.0;
 
   // ------------------ Heights ------------------
   static const double buttonHeight = 52.0;

@@ -7,7 +7,6 @@ import '../../constants/app_sizes.dart';
 import '../../providers/booking_provider.dart';
 
 // Custom Widgets
-import '../../widgets/booking/booking_header_image.dart';
 import '../../widgets/booking/booking_vehicle_field.dart';
 import '../../widgets/booking/booking_service_field.dart';
 import '../../widgets/booking/booking_date_field.dart';
@@ -61,7 +60,7 @@ class _BookingViewState extends State<BookingView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const BookingHeaderImage(),
+            
 
             const SizedBox(height: AppSizes.paddingLG),
 

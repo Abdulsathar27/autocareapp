@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:autocare/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../core/widgets/custom_button.dart';
 import '../../providers/user_provider.dart';
@@ -55,7 +56,7 @@ class EditProfileSaveButton extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text("Update failed"),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.redButton,
             ),
           );
         }

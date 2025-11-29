@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/widgets/custom_textfield.dart';
@@ -18,7 +19,7 @@ class BookingServiceField extends StatelessWidget {
       readOnly: true,
       suffixIcon: const Icon(
         Icons.arrow_forward_ios,
-        size: 18,
+        size: AppSizes.iconSM,
         color: AppColors.textSecondary,
       ),
       onTap: () async {

@@ -36,13 +36,13 @@ class VehicleDetailsImage extends StatelessWidget {
                 ? Image.network(
                     image!,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) =>
+                    errorBuilder: (_, _, _) =>
                         Image.asset(fallbackAsset, fit: BoxFit.cover),
                   )
                 : Image.asset(
                     image!,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) =>
+                    errorBuilder: (_, _, _) =>
                         Image.asset(fallbackAsset, fit: BoxFit.cover),
                   ),
       ),

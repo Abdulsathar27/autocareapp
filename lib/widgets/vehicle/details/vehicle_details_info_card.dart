@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../../constants/app_sizes.dart';
 import 'vehicle_details_info_row.dart';
@@ -21,13 +22,13 @@ class VehicleDetailsInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(AppSizes.radiusLG),
         boxShadow: const [
           BoxShadow(
             blurRadius: 12,
             offset: Offset(0, 4),
-            color: Colors.black26,
+            color:AppColors.textPrimary,
           )
         ],
       ),

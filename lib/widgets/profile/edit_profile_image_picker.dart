@@ -39,7 +39,7 @@ class EditProfileImagePicker extends StatelessWidget {
                   ? Image.network(
                       userImage!,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) =>
+                      errorBuilder: (_, _, _) =>
                           const Icon(Icons.person, size: 70, color: AppColors.primaryGreen),
                     )
                   : const Icon(Icons.person, size: 70, color: AppColors.primaryGreen)),

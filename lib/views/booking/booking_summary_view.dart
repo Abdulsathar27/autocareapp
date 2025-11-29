@@ -7,7 +7,6 @@ import '../../constants/app_sizes.dart';
 import '../../providers/booking_provider.dart';
 
 // Custom Widgets
-import '../../widgets/booking/summary/booking_summary_header.dart';
 import '../../widgets/booking/summary/booking_summary_card.dart';
 import '../../widgets/booking/summary/booking_summary_confirm_button.dart';
 
@@ -36,7 +35,7 @@ class BookingSummaryView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const BookingSummaryHeader(),
+           
 
             const SizedBox(height: 20),
 

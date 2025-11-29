@@ -31,7 +31,7 @@ class AddVehicleTypeDropdown extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.background,
             borderRadius: BorderRadius.circular(AppSizes.radiusMD),
             border: Border.all(color: Colors.grey.shade300),
           ),
