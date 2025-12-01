@@ -12,7 +12,12 @@
           "package_name": "com.android.application"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "891108248618-nf6io97697s6eums49tuid32pc1n444h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAovX5361ug4r15R3Z4c39YHkfkuuKQi6U"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891108248618-nf6io97697s6eums49tuid32pc1n444h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "891108248618-hjve7sg6o6gmi8vqkh1ik490au8m1jp6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.autocare"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +48,20 @@
           "package_name": "com.example.autocare"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "891108248618-catq774o6c1rgv6rsgfgsjsieksf3ddr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.autocare",
+            "certificate_hash": "dbc6d6a2028daab4f86ad988d057a8afce35d9fc"
+          }
+        },
+        {
+          "client_id": "891108248618-nf6io97697s6eums49tuid32pc1n444h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAovX5361ug4r15R3Z4c39YHkfkuuKQi6U"
@@ -39,7 +69,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891108248618-nf6io97697s6eums49tuid32pc1n444h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "891108248618-hjve7sg6o6gmi8vqkh1ik490au8m1jp6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.autocare"
+              }
+            }
+          ]
         }
       }
     }

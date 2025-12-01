@@ -1,5 +1,6 @@
 // lib/controllers/auth_controller.dart
 
+import 'dart:developer';
 
 import '../models/user_model.dart';
 import '../repositories/auth_repository.dart';
@@ -43,7 +44,8 @@ class AuthController {
         password: password,
       );
 
-      if (user == null) return AuthResult(success: false, error: "Invalid credentials");
+      if (user == null)
+        return AuthResult(success: false, error: "Invalid credentials");
 
       // Optionally we could load UserProvider here, but LoginView currently only calls this.
       return AuthResult(success: true);
@@ -59,14 +61,16 @@ class AuthController {
   // ---------------------------------------------------------
   Future<AuthResult> loginWithGoogle({
     required UserAuthProvider authProvider,
-    UserProvider? userProvider, // optional: controller can populate userProvider if passed
+    UserProvider?
+    userProvider, // optional: controller can populate userProvider if passed
   }) async {
     try {
       authProvider.setLoading(true);
 
       final user = await _authRepo.loginWithGoogle();
 
-      if (user == null) return AuthResult(success: false, error: "Google sign-in cancelled");
+      if (user == null)
+        return AuthResult(success: false, error: "Google sign-in cancelled");
 
       // Ensure Firestore user exists; create if missing
       final existing = await _userRepo.getUser(user.uid);
@@ -88,6 +92,7 @@ class AuthController {
 
       return AuthResult(success: true);
     } catch (e) {
+      log(e.toString());
       return AuthResult(success: false, error: e.toString());
     } finally {
       authProvider.setLoading(false);
