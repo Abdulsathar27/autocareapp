@@ -1,4 +1,3 @@
-// lib/repositories/auth_repository.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -38,10 +37,10 @@ class AuthRepository {
   /// Google Sign-In flow (returns Firebase User or null if cancelled)
   Future<User?> loginWithGoogle() async {
     try {
-      // Trigger Google Sign-In flow
+      
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
-        // User cancelled the Google sign-in
+        
         return null;
       }
 
@@ -59,7 +58,7 @@ class AuthRepository {
       final userCred = await _auth.signInWithCredential(credential);
       return userCred.user;
     } catch (e) {
-      // Re-throw or return null depending on how you want to handle errors
+      
       rethrow;
     }
   }
@@ -67,12 +66,12 @@ class AuthRepository {
   /// Logout (clears Google session too)
   Future<void> logout() async {
     try {
-      // Disconnect google sign-in if used
+      
       if (await _googleSignIn.isSignedIn()) {
         await _googleSignIn.disconnect();
       }
     } catch (_) {
-      // ignore google sign-out issues
+      
     }
     await _auth.signOut();
   }

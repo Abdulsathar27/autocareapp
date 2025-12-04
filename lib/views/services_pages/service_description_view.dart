@@ -8,7 +8,6 @@ class ServiceDescriptionView extends StatelessWidget {
   final String title;
   final String description;
   final List<String> features;
-
   const ServiceDescriptionView({
     super.key,
     required this.icon,
@@ -16,7 +15,6 @@ class ServiceDescriptionView extends StatelessWidget {
     required this.description,
     required this.features,
   });
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,13 +25,11 @@ class ServiceDescriptionView extends StatelessWidget {
         centerTitle: true,
         title: Text(title),
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.paddingLG),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // HEADER ICON
             Center(
               child: CircleAvatar(
                 radius: 45,
@@ -41,10 +37,7 @@ class ServiceDescriptionView extends StatelessWidget {
                 child: Icon(icon, size: 48, color: AppColors.primaryGreen),
               ),
             ),
-
             const SizedBox(height: 24),
-
-            // DESCRIPTION
             Text(
               description,
               style: GoogleFonts.poppins(
@@ -54,10 +47,7 @@ class ServiceDescriptionView extends StatelessWidget {
               ),
               textAlign: TextAlign.justify,
             ),
-
             const SizedBox(height: 24),
-
-            // FEATURES TITLE
             Text(
               "What’s Included",
               style: GoogleFonts.poppins(
@@ -65,10 +55,7 @@ class ServiceDescriptionView extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-
             const SizedBox(height: 12),
-
-            // FEATURES LIST
             ...features.map(
               (item) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),

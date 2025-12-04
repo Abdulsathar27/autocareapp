@@ -31,11 +31,11 @@ class CustomTextField extends StatefulWidget {
   });
 
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
+  State<CustomTextField> createState() => CustomTextFieldState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
-  bool _obscure = true;
+class CustomTextFieldState extends State<CustomTextField> {
+  bool obscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         TextFormField(
           controller: widget.controller,
           keyboardType: widget.keyboardType,
-          obscureText: widget.isPassword ? _obscure : false,
+          obscureText: widget.isPassword ? obscure : false,
           readOnly: widget.readOnly,
           onTap: widget.onTap,
           validator: widget.validator,
@@ -74,11 +74,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(
-                      _obscure ? Icons.visibility_off : Icons.visibility,
+                      obscure ? Icons.visibility_off : Icons.visibility,
                       color: AppColors.textSecondary.withValues(alpha: 0.7),
                     ),
                     onPressed: () {
-                      setState(() => _obscure = !_obscure);
+                      setState(() => obscure = !obscure);
                     },
                   )
                 : widget.suffixIcon,

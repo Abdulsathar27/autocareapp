@@ -12,27 +12,16 @@ class AutoCareGarageApp extends StatelessWidget {
     return MaterialApp(
       title: 'AutoCare Garage',
       debugShowCheckedModeBanner: false,
-
-      // ---------------------------------------------------------
-      // GLOBAL NAVIGATOR KEY (IMPORTANT FOR CONTROLLERS)
-      // ---------------------------------------------------------
+      // GLOBAL NAVIGATOR KEY 
       navigatorKey: AppRoutes.navigatorKey,
-
-      // ---------------------------------------------------------
       // THEME
-      // ---------------------------------------------------------
       theme: AppTheme.lightTheme.copyWith(
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
-
-      // ---------------------------------------------------------
       // ROUTING
-      // ---------------------------------------------------------
-      initialRoute: AppRoutes.initialRoute,
-      routes: AppRoutes.routes,
-
-      // If route is not found
-      onUnknownRoute: (settings) {
+     initialRoute: AppRoutes.initialRoute,
+     routes: AppRoutes.routes,
+     onUnknownRoute: (settings) {
         return MaterialPageRoute(
           builder: (_) => const Scaffold(
             body: Center(

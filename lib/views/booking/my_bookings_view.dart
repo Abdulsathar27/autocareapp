@@ -1,36 +1,30 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
 import 'package:autocare/constants/firebase_keys.dart';
-import 'package:autocare/providers/user_provider.dart';
-import 'package:autocare/widgets/booking/my_bookings/booking_empty_state.dart';
-import 'package:autocare/widgets/booking/my_bookings/booking_item_card.dart';
+import 'package:autocare/contollers/user_provider.dart';
+import 'package:autocare/views/booking/widgets/booking/my_bookings/booking_empty_state.dart';
+import 'package:autocare/views/booking/widgets/booking/my_bookings/booking_item_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyBookingsView extends StatelessWidget {
   const MyBookingsView({super.key});
-
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final userId = userProvider.userId;
-
     if (userId!.isEmpty) {
       return const BookingEmptyState();
     }
-
     return Scaffold(
       backgroundColor: AppColors.background,
-
-      // ----------------------------
-      // FIXED APPBAR (no dark shade)
-      // ----------------------------
+      // FIXED APPBAR 
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 2,
-        scrolledUnderElevation: 0, // ❌ Disable dark shade on scroll
-        surfaceTintColor: Colors.transparent, // ❌ Prevent tint overlay
+        scrolledUnderElevation: 0,         
+        surfaceTintColor: Colors.transparent, 
         shadowColor: AppColors.textPrimary.withValues(alpha: 0.08),
         centerTitle: true,
         title: const Text(
@@ -38,12 +32,9 @@ class MyBookingsView extends StatelessWidget {
           style: TextStyle(color: AppColors.textPrimary),
         ),
       ),
-
-      // ----------------------------
-      // FIX SCROLLING UNDER APPBAR
-      // ----------------------------
-      body: Padding(
-        padding: const EdgeInsets.only(top: 8), // Prevents overlap
+      // FIX SCROLLING UNDER APPBAR 
+      body: Padding( 
+        padding: const EdgeInsets.only(top: 8), 
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection(FirebaseKeys.bookings)

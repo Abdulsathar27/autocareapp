@@ -1,53 +1,42 @@
 import 'dart:io';
+import 'package:autocare/views/profile/widgets/profile/edit_profile_form.dart';
+import 'package:autocare/views/profile/widgets/profile/edit_profile_image_picker.dart';
+import 'package:autocare/views/profile/widgets/profile/edit_profile_save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
-import '../../providers/user_provider.dart';
-
-// Custom Widgets
-import '../../widgets/profile/edit_profile_image_picker.dart';
-import '../../widgets/profile/edit_profile_form.dart';
-import '../../widgets/profile/edit_profile_save_button.dart';
+import '../../contollers/user_provider.dart';
 
 class EditProfileView extends StatefulWidget {
   const EditProfileView({super.key});
-
   @override
   State<EditProfileView> createState() => _EditProfileViewState();
 }
-
 class _EditProfileViewState extends State<EditProfileView> {
   final ImagePicker picker = ImagePicker();
   File? newImage;
   bool isLoading = false;
-
   late TextEditingController nameCtrl;
   late TextEditingController emailCtrl;
   late TextEditingController phoneCtrl;
-
   @override
   void initState() {
     super.initState();
     final user = Provider.of<UserProvider>(context, listen: false).user;
-
     nameCtrl = TextEditingController(text: user?.name ?? "");
     emailCtrl = TextEditingController(text: user?.email ?? "");
     phoneCtrl = TextEditingController(text: user?.phone ?? "");
   }
-
   Future<void> pickImage() async {
     final picked = await picker.pickImage(source: ImageSource.gallery);
     if (picked != null) setState(() => newImage = File(picked.path));
   }
-
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
     final user = userProvider.user;
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -60,27 +49,19 @@ class _EditProfileViewState extends State<EditProfileView> {
         padding: const EdgeInsets.all(AppSizes.paddingMD),
         child: Column(
           children: [
-            const SizedBox(height: 20),
-
-            /// Image Picker Widget
+            const SizedBox(height: AppSizes.paddingMD),
             EditProfileImagePicker(
               newImage: newImage,
               userImage: user?.profileImage,
               onPick: pickImage,
             ),
-
-            const SizedBox(height: 30),
-
-            /// Form Fields Widget
+            const SizedBox(height: AppSizes.paddingMD),
             EditProfileForm(
               nameCtrl: nameCtrl,
               emailCtrl: emailCtrl,
               phoneCtrl: phoneCtrl,
             ),
-
-            const SizedBox(height: 30),
-
-            /// Save Button Widget
+            const SizedBox(height: AppSizes.paddingMD),
             EditProfileSaveButton(
               isLoading: isLoading,
               userProvider: userProvider,
@@ -89,8 +70,7 @@ class _EditProfileViewState extends State<EditProfileView> {
               phone: phoneCtrl.text.trim(),
               image: newImage,
             ),
-
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSizes.paddingMD),
           ],
         ),
       ),

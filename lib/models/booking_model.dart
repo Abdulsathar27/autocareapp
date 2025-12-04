@@ -9,7 +9,7 @@ class BookingModel {
   final DateTime bookingDate;
   final String bookingTime;
 
-  final String status; // pending / confirmed / completed / cancelled
+  final String status; 
   final String? adminNote;
 
   final DateTime? createdAt;
@@ -28,9 +28,7 @@ class BookingModel {
     this.updatedAt,
   });
 
-  // ---------------------------------------------------------
   // FROM FIRESTORE
-  // ---------------------------------------------------------
   factory BookingModel.fromMap(Map<String, dynamic> map, String documentId) {
     return BookingModel(
       id: documentId,
@@ -50,9 +48,8 @@ class BookingModel {
     );
   }
 
-  // ---------------------------------------------------------
+  
   // TO FIRESTORE
-  // ---------------------------------------------------------
   Map<String, dynamic> toMap() {
     return {
       'userId': userId,
@@ -67,10 +64,9 @@ class BookingModel {
     };
   }
 
-  // ---------------------------------------------------------
+  
   // COPY WITH
-  // ---------------------------------------------------------
-  BookingModel copyWith({
+   BookingModel copyWith({
     String? status,
     String? adminNote,
     DateTime? bookingDate,

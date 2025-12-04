@@ -1,15 +1,10 @@
-// lib/core/widgets/delete_vehicle_button.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../constants/app_sizes.dart';
 import '../../core/utils/helpers.dart';
-import '../../controllers/vehicle_controller.dart';
+import '../../services/vehicle_controller.dart';
 
-/// A reusable delete button that deletes a vehicle from Firestore.
-/// - [vehicleId] : the document id in the `vehicles` collection (required).
-/// - [onDeleted] : optional callback invoked after successful deletion.
-/// - [popAfterDelete] : if true, the widget will pop the current route after deletion.
 class DeleteVehicleButton extends StatefulWidget {
   final String? vehicleId;
   final VoidCallback? onDeleted;
@@ -31,7 +26,7 @@ class DeleteVehicleButton extends StatefulWidget {
 class _DeleteVehicleButtonState extends State<DeleteVehicleButton> {
   bool _isLoading = false;
 
-  Future<void> _handleDelete() async {
+  Future<void> handleDelete() async {
     if (widget.vehicleId == null || widget.vehicleId!.isEmpty) {
       Helpers.showSnackBar(
         context,
@@ -96,7 +91,7 @@ class _DeleteVehicleButtonState extends State<DeleteVehicleButton> {
             borderRadius: BorderRadius.circular(AppSizes.radiusMD),
           ),
         ),
-        onPressed: _isLoading ? null : _handleDelete,
+        onPressed: _isLoading ? null : handleDelete,
         child: _isLoading
             ? const SizedBox(
                 height: 18,

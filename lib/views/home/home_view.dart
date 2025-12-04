@@ -1,33 +1,26 @@
+import 'package:autocare/views/home/widgets/home_header.dart';
+import 'package:autocare/views/home/widgets/search_bar.dart';
+import 'package:autocare/views/home/widgets/services_section.dart';
 import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
-
-import '../../widgets/home/home_header.dart';
-import '../../widgets/home/search_bar.dart';
-import '../../widgets/home/services_section.dart';
-
-// Bottom Nav Screens
 import '../booking/booking_view.dart';
 import '../profile/profile_view.dart';
 import '../vehicle/vehicle_list_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
-
   @override
   State<HomeView> createState() => _HomeViewState();
 }
-
 class _HomeViewState extends State<HomeView> {
   int _index = 0;
-
   final List<Widget> screens = const [
     _HomeDashboard(),
     BookingView(),
     VehicleListView(),
     ProfileView(),
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,10 +43,8 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
-
 class _HomeDashboard extends StatelessWidget {
   const _HomeDashboard();
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

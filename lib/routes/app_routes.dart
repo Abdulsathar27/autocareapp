@@ -1,61 +1,30 @@
-// lib/routes/app_routes.dart
-
 import 'package:autocare/views/services_pages/car_wash_view.dart';
 import 'package:autocare/views/services_pages/general_service_view.dart';
 import 'package:autocare/views/services_pages/repair_work_view.dart';
 import 'package:autocare/views/services_pages/tyre_service_view.dart';
 import 'package:flutter/material.dart';
-
-// -------------------------
-// AUTH
-// -------------------------
-import '../views/auth/login_view.dart';
-import '../views/auth/register_view.dart';
-import '../views/auth/phone_auth_view.dart';
-
-// -------------------------
-// HOME
-// -------------------------
+import '../views/auth/login/login_view.dart';
+import '../views/auth/register/register_view.dart';
 import '../views/home/home_view.dart';
-
-// -------------------------
-// VEHICLES
-// -------------------------
 import '../views/vehicle/vehicle_list_view.dart';
 import '../views/vehicle/add_vehicle_view.dart';
 import '../views/vehicle/vehicle_details_view.dart';
-
-// -------------------------
-// BOOKING
-// -------------------------
 import '../views/booking/booking_view.dart';
 import '../views/booking/booking_services.dart';
 import '../views/booking/booking_summary_view.dart';
 import '../views/booking/booking_success_view.dart';
 import '../views/booking/my_bookings_view.dart';
-
-// -------------------------
-// PROFILE
-// -------------------------
 import '../views/profile/profile_view.dart';
 import '../views/profile/edit_profile_view.dart';
 
-// -------------------------
-// SERVICE DETAILS (NEW)
-// -------------------------
 
 
 class AppRoutes {
-  // GLOBAL NAVIGATION KEY
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
-  // INITIAL ROUTE
   static const String initialRoute = '/login';
-
-  // -------------------------
   // ROUTE NAMES
-  // -------------------------
 
   // Auth
   static const String login = '/login';
@@ -87,14 +56,12 @@ class AppRoutes {
   static const String serviceWash = '/service-wash';
   static const String serviceTyre = '/service-tyre';
 
-  // -------------------------
   // ROUTE WIDGET MAP
-  // -------------------------
+  
   static Map<String, WidgetBuilder> routes = {
     // Auth
     login: (_) => const LoginView(),
     register: (_) => const RegisterView(),
-    phoneAuth: (_) => const PhoneAuthView(),
 
     // Home
     home: (_) => const HomeView(),

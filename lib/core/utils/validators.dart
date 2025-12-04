@@ -1,7 +1,5 @@
 class Validators {
-  // ---------------------------------------------------------
   // EMAIL VALIDATION
-  // ---------------------------------------------------------
   static String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "Email cannot be empty";
@@ -14,10 +12,7 @@ class Validators {
 
     return null;
   }
-
-  // ---------------------------------------------------------
   // PASSWORD VALIDATION
-  // ---------------------------------------------------------
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return "Password cannot be empty";
@@ -27,10 +22,7 @@ class Validators {
     }
     return null;
   }
-
-  // ---------------------------------------------------------
   // PHONE NUMBER VALIDATION
-  // ---------------------------------------------------------
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "Phone number cannot be empty";
@@ -43,10 +35,7 @@ class Validators {
 
     return null;
   }
-
-  // ---------------------------------------------------------
   // NAME VALIDATION
-  // ---------------------------------------------------------
   static String? validateName(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "Name cannot be empty";
@@ -57,9 +46,8 @@ class Validators {
     return null;
   }
 
-  // ---------------------------------------------------------
+  
   // GENERIC REQUIRED FIELD
-  // ---------------------------------------------------------
   static String? validateRequired(String? value, {String fieldName = "Field"}) {
     if (value == null || value.trim().isEmpty) {
       return "$fieldName cannot be empty";

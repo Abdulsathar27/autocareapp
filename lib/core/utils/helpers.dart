@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
 
 class Helpers {
-  // ---------------------------------------------------------
-  // SHOW SNACKBAR (Floating)
-  // ---------------------------------------------------------
+  // SHOW SNACKBAR 
   static void showSnackBar(
     BuildContext context,
     String message, {
@@ -27,9 +25,8 @@ class Helpers {
     );
   }
 
-  // ---------------------------------------------------------
+  
   // SIMPLE OK DIALOG
-  // ---------------------------------------------------------
   static Future<void> showAppDialog({
     required BuildContext context,
     required String title,
@@ -67,9 +64,8 @@ class Helpers {
     );
   }
 
-  // ---------------------------------------------------------
-  // CONFIRMATION DIALOG (Two Buttons)
-  // ---------------------------------------------------------
+  
+  // CONFIRMATION DIALOG 
   static Future<void> showConfirmDialog({
     required BuildContext context,
     required String title,
@@ -122,19 +118,16 @@ class Helpers {
     );
   }
 
-  // ---------------------------------------------------------
   // DATE FORMATTER (dd MMM yyyy)
-  // ---------------------------------------------------------
   static String formatDate(DateTime date) {
     final day = date.day.toString().padLeft(2, '0');
-    final month = _monthName(date.month);
+    final month = monthName(date.month);
     final year = date.year;
     return "$day $month $year";
   }
 
-  // ---------------------------------------------------------
-  // TIME FORMATTER (hh:mm AM/PM)
-  // ---------------------------------------------------------
+  
+  // TIME FORMATTER 
   static String formatTime(TimeOfDay time) {
     final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
     final minute = time.minute.toString().padLeft(2, '0');
@@ -143,10 +136,9 @@ class Helpers {
     return "$hour:$minute $period";
   }
 
-  // ---------------------------------------------------------
+  
   // PRIVATE: MONTH NAME
-  // ---------------------------------------------------------
-  static String _monthName(int monthNumber) {
+  static String monthName(int monthNumber) {
     const months = [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"

@@ -7,7 +7,7 @@ class VehicleModel {
   final String vehicleModel;
   final String vehicleNumber;
   final String vehicleType;
-  final String? image; // optional asset or URL
+  final String? image; 
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -24,9 +24,8 @@ class VehicleModel {
   })  : createdAt = createdAt ?? DateTime.now(),
         updatedAt = updatedAt ?? DateTime.now();
 
-  // ------------------------------------------------------------------
+ 
   // FROM FIRESTORE
-  // ------------------------------------------------------------------
   factory VehicleModel.fromMap(Map<String, dynamic> map, String documentId) {
     return VehicleModel(
       id: documentId,
@@ -41,9 +40,8 @@ class VehicleModel {
     );
   }
 
-  // ------------------------------------------------------------------
+  
   // TO FIRESTORE
-  // ------------------------------------------------------------------
   Map<String, dynamic> toMap() {
     return {
       'userId': userId,
@@ -57,9 +55,9 @@ class VehicleModel {
     };
   }
 
-  // ------------------------------------------------------------------
-  // COPY WITH (for updates)
-  // ------------------------------------------------------------------
+  
+  // COPY WITH   
+  
   VehicleModel copyWith({
     String? vehicleName,
     String? vehicleModel,

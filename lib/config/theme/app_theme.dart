@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
 
 class AppTheme {
-  // ----------------------------------------------------------
-  // Light Theme (Primary Theme)
-  // ----------------------------------------------------------
+  // Light Theme 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     scaffoldBackgroundColor: AppColors.background,
     primaryColor: AppColors.primaryGreen,
     fontFamily: GoogleFonts.poppins().fontFamily,
-
-    // --------------------------------------------------------
     // APP BAR THEME
-    // --------------------------------------------------------
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.background,
       elevation: 0,
@@ -28,19 +22,13 @@ class AppTheme {
       ),
       iconTheme: const IconThemeData(color: AppColors.textPrimary),
     ),
-
-    // --------------------------------------------------------
     // TEXT SELECTION / CURSOR COLOR
-    // --------------------------------------------------------
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: AppColors.primaryGreen,
       selectionColor: AppColors.primaryGreen,
       selectionHandleColor: AppColors.primaryGreen,
     ),
-
-    // --------------------------------------------------------
     // INPUT DECORATION (TextFields)
-    // --------------------------------------------------------
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.white,
@@ -71,9 +59,7 @@ class AppTheme {
       ),
     ),
 
-    // --------------------------------------------------------
     // BUTTON THEMES
-    // --------------------------------------------------------
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primaryGreen,
@@ -88,7 +74,6 @@ class AppTheme {
         ),
       ),
     ),
-
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(double.infinity, AppSizes.buttonHeight),
@@ -103,9 +88,7 @@ class AppTheme {
       ),
     ),
 
-    // --------------------------------------------------------
     // BOTTOM NAVIGATION BAR
-    // --------------------------------------------------------
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
       selectedItemColor: AppColors.primaryGreen,
@@ -116,9 +99,7 @@ class AppTheme {
       type: BottomNavigationBarType.fixed,
     ),
 
-    // --------------------------------------------------------
     // TEXT COLOR & STYLING
-    // --------------------------------------------------------
     textTheme: TextTheme(
       bodyLarge: GoogleFonts.poppins(
         color: AppColors.textPrimary,
