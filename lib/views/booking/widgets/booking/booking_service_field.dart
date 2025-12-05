@@ -28,7 +28,7 @@ class BookingServiceField extends StatelessWidget {
 
         // update UI after selecting service
         final booking = context.read<BookingProvider>();
-        controller.text = booking.selectedService ?? "";
+        controller.text = booking.selectedServiceName ?? "";
       },
     );
   }

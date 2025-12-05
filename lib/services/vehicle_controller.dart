@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import '../constants/firebase_keys.dart';
 import '../models/vehicle_model.dart';
 import '../contollers/vehicle_provider.dart';
@@ -8,15 +7,18 @@ import '../core/utils/helpers.dart';
 
 class VehicleController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  // ADD VEHICLE 
-  Future<void> addVehicle({
+
+  // ---------------------------------------------------------
+  // ADD VEHICLE
+  // ---------------------------------------------------------
+  Future<bool> addVehicle({
     required BuildContext context,
     required String userId,
     required String vehicleName,
     required String vehicleModel,
     required String vehicleNumber,
     required String vehicleType,
-    String? imageUrl, 
+    String? imageUrl,
     required VehicleProvider provider,
   }) async {
     try {
@@ -37,36 +39,42 @@ class VehicleController {
       );
 
       await docRef.set({
-        FirebaseKeys.userId: newVehicle.userId,
-        FirebaseKeys.vehicleName: newVehicle.vehicleName,
-        FirebaseKeys.vehicleModel: newVehicle.vehicleModel,
-        FirebaseKeys.vehicleNumber: newVehicle.vehicleNumber,
-        FirebaseKeys.vehicleType: newVehicle.vehicleType,
-        FirebaseKeys.image: newVehicle.image,
+        FirebaseKeys.userId: userId,
+        FirebaseKeys.vehicleName: vehicleName,
+        FirebaseKeys.vehicleModel: vehicleModel,
+        FirebaseKeys.vehicleNumber: vehicleNumber,
+        FirebaseKeys.vehicleType: vehicleType,
+        FirebaseKeys.image: imageUrl,
         FirebaseKeys.createdAt: FieldValue.serverTimestamp(),
         FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
       });
-      try {
-        provider.addVehicle(newVehicle);
-      } catch (_) {
 
+      // Update provider locally (safe)
+      provider.addVehicle(newVehicle);
+
+      if (context.mounted) {
+        Helpers.showSnackBar(context, "Vehicle added successfully!");
       }
 
-      if (!context.mounted) return;
-      Helpers.showSnackBar(context, "Vehicle added successfully!");
+      return true;
     } catch (e) {
-      Helpers.showSnackBar(
-        context,
-        "Error: ${e.toString()}",
-        backgroundColor: Colors.red,
-      );
+      if (context.mounted) {
+        Helpers.showSnackBar(
+          context,
+          "Error adding vehicle: $e",
+          backgroundColor: Colors.red,
+        );
+      }
+      return false;
     } finally {
       provider.setLoading(false);
     }
   }
 
+  // ---------------------------------------------------------
   // UPDATE VEHICLE
-  Future<void> updateVehicle({
+  // ---------------------------------------------------------
+  Future<bool> updateVehicle({
     required BuildContext context,
     required VehicleModel vehicle,
     required VehicleProvider provider,
@@ -74,73 +82,73 @@ class VehicleController {
     try {
       provider.setLoading(true);
 
-      final updatedData = vehicle.toMap()
+      final data = vehicle.toMap()
         ..[FirebaseKeys.updatedAt] = FieldValue.serverTimestamp();
 
       await _firestore
           .collection(FirebaseKeys.vehicles)
           .doc(vehicle.id)
-          .update(updatedData);
+          .update(data);
 
-  
-      try {
-        provider.updateVehicleLocal(vehicle);
-      } catch (_) {}
+      provider.updateVehicleLocal(vehicle);
 
-      if (!context.mounted) return;
-      Helpers.showSnackBar(context, "Vehicle updated successfully!");
+      if (context.mounted) {
+        Helpers.showSnackBar(context, "Vehicle updated successfully!");
+      }
+
+      return true;
     } catch (e) {
-      Helpers.showSnackBar(
-        context,
-        "Error: ${e.toString()}",
-        backgroundColor: Colors.red,
-      );
+      if (context.mounted) {
+        Helpers.showSnackBar(
+          context,
+          "Update failed: $e",
+          backgroundColor: Colors.red,
+        );
+      }
+      return false;
     } finally {
       provider.setLoading(false);
     }
   }
 
-  // DELETE VEHICLE 
-  Future<void> deleteVehicle(
+  // ---------------------------------------------------------
+  // DELETE VEHICLE
+  // ---------------------------------------------------------
+  Future<bool> deleteVehicle(
     String vehicleId, {
     BuildContext? context,
     VehicleProvider? provider,
   }) async {
     try {
-      await _firestore
-          .collection(FirebaseKeys.vehicles)
-          .doc(vehicleId)
-          .delete();
-      if (provider != null) {
-        try {
-          provider.deleteVehicle(vehicleId);
-        } catch (_) {
-          
-        }
-      }
+      await _firestore.collection(FirebaseKeys.vehicles).doc(vehicleId).delete();
 
-      if (context != null && context.mounted) {
+      // Update provider safely
+      provider?.deleteVehicle(vehicleId);
+
+      if (context?.mounted ?? false) {
         Helpers.showSnackBar(
-          context,
+          context!,
           "Vehicle deleted!",
           backgroundColor: Colors.red,
         );
       }
+
+      return true;
     } catch (e) {
-      if (context != null && context.mounted) {
+      if (context?.mounted ?? false) {
         Helpers.showSnackBar(
-          context,
-          "Error: ${e.toString()}",
+          context!,
+          "Error deleting vehicle: $e",
           backgroundColor: Colors.red,
         );
-      } else {
-      
-        rethrow;
       }
+      return false;
     }
   }
 
-  // FETCH USER VEHICLES (STREAM)
+  // ---------------------------------------------------------
+  // STREAM: FETCH ALL USER VEHICLES
+  // ---------------------------------------------------------
   Stream<List<VehicleModel>> getUserVehicles(String userId) {
     return _firestore
         .collection(FirebaseKeys.vehicles)
@@ -159,16 +167,20 @@ class VehicleController {
         );
   }
 
-  // GET SINGLE VEHICLE
+  // ---------------------------------------------------------
+  // GET SINGLE VEHICLE BY ID
+  // ---------------------------------------------------------
   Future<VehicleModel?> getVehicleById(String vehicleId) async {
     final doc = await _firestore
         .collection(FirebaseKeys.vehicles)
         .doc(vehicleId)
         .get();
 
-    if (doc.exists) {
-      return VehicleModel.fromMap(doc.data()! as Map<String, dynamic>, doc.id);
-    }
-    return null;
+    if (!doc.exists) return null;
+
+    return VehicleModel.fromMap(
+      doc.data()! as Map<String, dynamic>,
+      doc.id,
+    );
   }
 }

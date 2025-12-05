@@ -26,7 +26,7 @@ class BookingTimeField extends StatelessWidget {
 
         if (picked != null) {
           controller.text = picked.format(context);
-          context.read<BookingProvider>().setTime(controller.text);
+          context.read<BookingProvider>().selectTime(controller.text);
         }
       },
     );

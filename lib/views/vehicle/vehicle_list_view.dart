@@ -15,7 +15,7 @@ class VehicleListView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const VehicleListAppBar(),
-      body: VehicleStreamBuilder(userId: userId),
+      body: VehicleStreamBuilder(userId: userId!),
     );
   }
 }

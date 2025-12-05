@@ -1,69 +1,55 @@
-import 'package:autocare/constants/app_colors.dart';
-import 'package:autocare/constants/app_sizes.dart';
-import 'package:autocare/constants/firebase_keys.dart';
-import 'package:autocare/contollers/user_provider.dart';
 import 'package:autocare/views/booking/widgets/booking/my_bookings/booking_empty_state.dart';
 import 'package:autocare/views/booking/widgets/booking/my_bookings/booking_item_card.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../constants/app_colors.dart';
+import '../../../constants/app_sizes.dart';
+import '../../../contollers/user_provider.dart';
+import '../../../contollers/booking_provider.dart';
+import '../../../models/booking_model.dart';
+
 
 class MyBookingsView extends StatelessWidget {
   const MyBookingsView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
-    final userId = userProvider.userId;
-    if (userId!.isEmpty) {
+    final userId = context.read<UserProvider>().userId;
+
+    if (userId == null || userId.isEmpty) {
       return const BookingEmptyState();
     }
+
+    final bookingProvider = context.watch<BookingProvider>();
+
     return Scaffold(
       backgroundColor: AppColors.background,
-      // FIXED APPBAR 
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 2,
-        scrolledUnderElevation: 0,         
-        surfaceTintColor: Colors.transparent, 
-        shadowColor: AppColors.textPrimary.withValues(alpha: 0.08),
+        title: const Text("My Bookings"),
         centerTitle: true,
-        title: const Text(
-          "My Bookings",
-          style: TextStyle(color: AppColors.textPrimary),
-        ),
+        backgroundColor: AppColors.background,
       ),
-      // FIX SCROLLING UNDER APPBAR 
-      body: Padding( 
-        padding: const EdgeInsets.only(top: 8), 
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection(FirebaseKeys.bookings)
-              .where(FirebaseKeys.userId, isEqualTo: userId)
-              .orderBy(FirebaseKeys.createdAt, descending: true)
-              .snapshots(),
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+      body: StreamBuilder<List<BookingModel>>(
+        stream: bookingProvider.userBookingStream(userId),
+        builder: (context, snap) {
+          if (!snap.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            if (!snap.hasData || snap.data!.docs.isEmpty) {
-              return const BookingEmptyState();
-            }
+          final bookings = snap.data!;
 
-            final docs = snap.data!.docs;
+          if (bookings.isEmpty) {
+            return const BookingEmptyState();
+          }
 
-            return ListView.builder(
-              padding: const EdgeInsets.all(AppSizes.paddingMD),
-              itemCount: docs.length,
-              itemBuilder: (context, index) {
-                return BookingItemCard(
-                  data: docs[index].data() as Map<String, dynamic>,
-                  bookingId: docs[index].id,
-                );
-              },
-            );
-          },
-        ),
+          return ListView.builder(
+            padding: const EdgeInsets.all(AppSizes.paddingMD),
+            itemCount: bookings.length,
+            itemBuilder: (context, i) {
+              return BookingItemCard(model: bookings[i]);
+            },
+          );
+        },
       ),
     );
   }

@@ -31,7 +31,7 @@ class BookingServicesList extends StatelessWidget {
         return BookingServiceTile(
           name: item["name"] as String,
           icon: item["icon"] as IconData,
-          isSelected: booking.selectedService == item["name"],
+          isSelected: booking.selectedServiceName == item["name"],
           onTap: () {
             // ❗ SAVE ID + NAME
             booking.selectService(

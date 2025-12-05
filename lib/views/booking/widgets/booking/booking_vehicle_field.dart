@@ -28,7 +28,7 @@ class BookingVehicleField extends StatelessWidget {
 
         // Update text when returning
         final booking = context.read<BookingProvider>();
-        controller.text = booking.selectedVehicle ?? "";
+        controller.text = booking.selectedVehicleName ?? "";
       },
     );
   }

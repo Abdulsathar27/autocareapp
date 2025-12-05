@@ -16,68 +16,72 @@ class AuthController {
   final AuthRepository authRepo = AuthRepository();
   final UserRepository userRepo = UserRepository();
 
-  
-  // LOAD USER 
+  // LOAD USER
   Future<void> loadUser(String uid, UserProvider userProvider) async {
     final user = await userRepo.getUser(uid);
-    if (user != null) userProvider.setUser(user);
+    if (user != null) {
+      userProvider.setUser(user);
+    }
   }
+
   // LOGIN WITH EMAIL
-    Future<AuthResult> loginWithEmail({
+  Future<AuthResult> loginWithEmail({
     required String email,
     required String password,
     required UserAuthProvider authProvider,
   }) async {
     try {
-      authProvider.setLoading(true);
+      authProvider.setEmailLoading(true);
 
-      final user = await authRepo.loginWithEmail(
+      final firebaseUser = await authRepo.loginWithEmail(
         email: email,
         password: password,
       );
 
-      if (user == null)
+      if (firebaseUser == null) {
         return AuthResult(success: false, error: "Invalid credentials");
+      }
 
-      
       return AuthResult(success: true);
     } catch (e) {
       return AuthResult(success: false, error: e.toString());
     } finally {
-      authProvider.setLoading(false);
+      authProvider.setEmailLoading(false);
     }
   }
 
-  
   // LOGIN WITH GOOGLE
   Future<AuthResult> loginWithGoogle({
     required UserAuthProvider authProvider,
-    UserProvider?
-    userProvider, 
+    UserProvider? userProvider,
   }) async {
     try {
-      authProvider.setLoading(true);
+      authProvider.setGoogleLoading(true);
 
-      final user = await authRepo.loginWithGoogle();
+      final firebaseUser = await authRepo.loginWithGoogle();
 
-      if (user == null)
+      if (firebaseUser == null) {
         return AuthResult(success: false, error: "Google sign-in cancelled");
+      }
 
-      final existing = await userRepo.getUser(user.uid);
+      // Check Firestore for user
+      final existing = await userRepo.getUser(firebaseUser.uid);
+
       if (existing == null) {
-        final created = UserModel(
-          id: user.uid,
-          name: user.displayName ?? '',
-          email: user.email ?? '',
-          phone: user.phoneNumber ?? '',
-          profileImage: user.photoURL,
+        final newUser = UserModel(
+          id: firebaseUser.uid,
+          name: firebaseUser.displayName ?? "",
+          email: firebaseUser.email ?? "",
+          phone: firebaseUser.phoneNumber ?? "",
+          profileImage: firebaseUser.photoURL,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         );
-        await userRepo.createUser(created);
-        if (userProvider != null) userProvider.setUser(created);
+
+        await userRepo.createUser(newUser);
+        userProvider?.setUser(newUser);
       } else {
-        if (userProvider != null) userProvider.setUser(existing);
+        userProvider?.setUser(existing);
       }
 
       return AuthResult(success: true);
@@ -85,12 +89,11 @@ class AuthController {
       log(e.toString());
       return AuthResult(success: false, error: e.toString());
     } finally {
-      authProvider.setLoading(false);
+      authProvider.setGoogleLoading(false);
     }
   }
 
-  
-  // REGISTER WITH EMAIL 
+  // REGISTER WITH EMAIL
   Future<AuthResult> registerWithEmail({
     required String name,
     required String email,
@@ -100,7 +103,7 @@ class AuthController {
     UserProvider? userProvider,
   }) async {
     try {
-      authProvider.setLoading(true);
+      authProvider.setEmailLoading(true);
 
       final firebaseUser = await authRepo.registerWithEmail(
         email: email,
@@ -121,17 +124,15 @@ class AuthController {
         updatedAt: DateTime.now(),
       );
 
-      
       await userRepo.createUser(newUser);
-      if (userProvider != null) {
-        userProvider.setUser(newUser);
-      }
+
+      userProvider?.setUser(newUser);
 
       return AuthResult(success: true);
     } catch (e) {
       return AuthResult(success: false, error: e.toString());
     } finally {
-      authProvider.setLoading(false);
+      authProvider.setEmailLoading(false);
     }
   }
 }

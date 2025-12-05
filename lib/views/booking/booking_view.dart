@@ -25,10 +25,10 @@ class _BookingViewState extends State<BookingView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final booking = context.watch<BookingProvider>();
-    vehicleCtrl.text = booking.selectedVehicle ?? "";
-    serviceCtrl.text = booking.selectedService ?? "";
-    dateCtrl.text = booking.selectedDateFormatted;
-    timeCtrl.text = booking.selectedTime ?? "";
+   vehicleCtrl.text = booking.selectedVehicleName ?? "";
+  serviceCtrl.text = booking.selectedServiceName ?? "";
+  dateCtrl.text = booking.selectedDateFormatted;
+  timeCtrl.text = booking.selectedTime ?? "";
   }
   @override
   Widget build(BuildContext context) {

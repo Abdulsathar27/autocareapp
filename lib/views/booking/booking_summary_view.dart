@@ -31,8 +31,8 @@ class BookingSummaryView extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             BookingSummaryCard(
-              service: booking.selectedService ?? "Not Selected",
-              vehicle: booking.selectedVehicle ?? "Not Selected",
+              service: booking.selectedServiceName ?? "Not Selected",
+              vehicle: booking.selectedVehicleName ?? "Not Selected",
               date: booking.selectedDateFormatted,
               time: booking.selectedTime ?? "Not Selected",
             ),

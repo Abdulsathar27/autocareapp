@@ -1,4 +1,6 @@
 // lib/repositories/user_repository.dart
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
 import '../constants/firebase_keys.dart';
@@ -29,7 +31,7 @@ class UserRepository {
     return UserModel.fromMap(data, doc.id);
   }
 
-  Future<void> updateUser(UserModel user) async {
+  Future<void> updateUser(UserModel user, {required String name, required String email, required String phone, File? imageFile}) async {
     await _firestore.collection(FirebaseKeys.users).doc(user.id).update({
       FirebaseKeys.name: user.name,
       FirebaseKeys.phone: user.phone,

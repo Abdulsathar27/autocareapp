@@ -1,38 +1,37 @@
-import 'package:autocare/views/home/widgets/home_header.dart';
-import 'package:autocare/views/home/widgets/search_bar.dart';
-import 'package:autocare/views/home/widgets/services_section.dart';
+import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/contollers/home_nav_provider.dart';
+import 'package:autocare/views/booking/booking_view.dart';
+import 'package:autocare/views/home/widgets/home_dashboard.dart';
+import 'package:autocare/views/profile/profile_view.dart';
+import 'package:autocare/views/vehicle/vehicle_list_view.dart';
 import 'package:flutter/material.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_sizes.dart';
-import '../booking/booking_view.dart';
-import '../profile/profile_view.dart';
-import '../vehicle/vehicle_list_view.dart';
+import 'package:provider/provider.dart';
 
-class HomeView extends StatefulWidget {
+
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-class _HomeViewState extends State<HomeView> {
-  int _index = 0;
-  final List<Widget> screens = const [
-    _HomeDashboard(),
-    BookingView(),
-    VehicleListView(),
-    ProfileView(),
-  ];
+
   @override
   Widget build(BuildContext context) {
+    final nav = context.watch<HomeNavProvider>();
+
+    final screens = const [
+      HomeDashboard(),
+      BookingView(),
+      VehicleListView(),
+      ProfileView(),
+    ];
+
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: screens[_index],
+      body: screens[nav.index],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _index,
+        currentIndex: nav.index,
         selectedItemColor: AppColors.primaryGreen,
         unselectedItemColor: AppColors.textSecondary,
         backgroundColor: AppColors.cardBackground,
         type: BottomNavigationBarType.fixed,
-        onTap: (i) => setState(() => _index = i),
+        onTap: (i) => context.read<HomeNavProvider>().setIndex(i),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.event_note), label: "Bookings"),
@@ -43,22 +42,5 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
-class _HomeDashboard extends StatelessWidget {
-  const _HomeDashboard();
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppSizes.paddingMD),
-      child: Column(
-        children: const [
-          SizedBox(height: AppSizes.paddingXL),
-          HomeHeader(),
-          SizedBox(height: AppSizes.paddingXL),
-          HomeSearchBar(),
-          SizedBox(height: AppSizes.paddingXL),
-          ServicesSection(),
-        ],
-      ),
-    );
-  }
-}
+
+

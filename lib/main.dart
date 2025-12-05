@@ -1,13 +1,13 @@
 import 'dart:async';
-
+import 'package:autocare/contollers/add_vehicle_form_provider.dart';
+import 'package:autocare/contollers/edit_profile_provider.dart';
+import 'package:autocare/contollers/home_nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-
 import 'app.dart';
-import 'routes/app_routes.dart';
-
+import 'routes/app_routes.dart';  
 import 'contollers/user_auth_provider.dart';
 import 'contollers/user_provider.dart';
 import 'contollers/vehicle_provider.dart';
@@ -24,6 +24,10 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => VehicleProvider()),
         ChangeNotifierProvider(create: (_) => BookingProvider()),
+        ChangeNotifierProvider(create: (_) => HomeNavProvider()),
+        ChangeNotifierProvider(create: (_) => EditProfileProvider()),
+        ChangeNotifierProvider(create: (_) => AddVehicleFormProvider()),
+
       ],
       child: const AutoCareGarageApp(),
     ),

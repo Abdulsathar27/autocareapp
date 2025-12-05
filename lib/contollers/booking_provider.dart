@@ -1,61 +1,71 @@
-
 import 'package:flutter/material.dart';
+import '../models/booking_model.dart';
+import '../services/booking_controller.dart';
 
 class BookingProvider extends ChangeNotifier {
-  // Loading
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-  void setLoading(bool value) {
-    _isLoading = value;
+  final BookingController controller = BookingController();
+
+  // ---------------------------------------------------------
+  // LOADING STATE
+  // ---------------------------------------------------------
+  bool _loading = false;
+  bool get isLoading => _loading;
+  void setLoading(bool v) {
+    _loading = v;
     notifyListeners();
   }
-  // Selected vehicle 
+
+  // ---------------------------------------------------------
+  // VEHICLE SELECTION
+  // ---------------------------------------------------------
   String? _selectedVehicleId;
   String? get selectedVehicleId => _selectedVehicleId;
 
   String? _selectedVehicleName;
-  String? get selectedVehicle => _selectedVehicleName; 
+  String? get selectedVehicleName => _selectedVehicleName;
 
-  /// Select vehicle by id + friendly name 
   void selectVehicle(String id, String name) {
     _selectedVehicleId = id;
     _selectedVehicleName = name;
     notifyListeners();
   }
-
-  /// Legacy setter 
-  void setVehicle(String name) {
+  void setVehicleName(String name) {
     _selectedVehicleName = name;
     notifyListeners();
   }
 
-  // Selected service (ID + name)
+  // ---------------------------------------------------------
+  // SERVICE SELECTION
+  // ---------------------------------------------------------
   String? _selectedServiceId;
   String? get selectedServiceId => _selectedServiceId;
 
   String? _selectedServiceName;
-  String? get selectedService => _selectedServiceName; 
+  String? get selectedServiceName => _selectedServiceName;
 
   void selectService(String id, String name) {
     _selectedServiceId = id;
     _selectedServiceName = name;
     notifyListeners();
   }
-
-  void setService(String name) {
+  
+   void setServiceName(String name) {
     _selectedServiceName = name;
     notifyListeners();
   }
-  // Selected date/time
-  // date stored as DateTime for Firestore compatibility
-  
+
+  // ---------------------------------------------------------
+  // DATE SELECTION
+  // ---------------------------------------------------------
   DateTime? _selectedDate;
   DateTime? get selectedDate => _selectedDate;
 
   String get selectedDateFormatted {
-    if (_selectedDate == null) return '';
+    if (_selectedDate == null) return "";
     final d = _selectedDate!;
-    return '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}';
+    return "${d.day.toString().padLeft(2, '0')}/"
+           "${d.month.toString().padLeft(2, '0')}/"
+           "${d.year}";
   }
 
   void selectDate(DateTime date) {
@@ -63,13 +73,10 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  
-  void setDate(String formatted) {
-    _selectedDate = _selectedDate; 
-     notifyListeners();
-  }
-
-  String? _selectedTime; 
+  // ---------------------------------------------------------
+  // TIME SELECTION
+  // ---------------------------------------------------------
+  String? _selectedTime;
   String? get selectedTime => _selectedTime;
 
   void selectTime(String time) {
@@ -77,63 +84,52 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setTime(String time) {
-    _selectedTime = time;
-    notifyListeners();
-  }
-
-
-  // Local booking history 
-  final List<Map<String, dynamic>> _bookings = [];
-  List<Map<String, dynamic>> get bookings => List.unmodifiable(_bookings);
-
-  void addBookingToHistory(Map<String, dynamic> booking) {
-    _bookings.insert(0, booking);
-    notifyListeners();
-  }
-
-  void clearHistory() {
-    _bookings.clear();
-    notifyListeners();
-  }
-
-  
-  // Helpers
+  // ---------------------------------------------------------
+  // BOOKING COMPLETION CHECK
+  // ---------------------------------------------------------
   bool get isBookingComplete =>
       _selectedVehicleId != null &&
       _selectedServiceId != null &&
       _selectedDate != null &&
       _selectedTime != null;
 
-  Map<String, dynamic>? bookingPayload({required String userId}) {
-    if (!isBookingComplete) return null;
+  // ---------------------------------------------------------
+  // CREATE BOOKING
+  // ---------------------------------------------------------
+  Future<bool> createBooking(String userId) async {
+    if (!isBookingComplete) return false;
 
-    return {
-      'userId': userId,
-      'vehicleId': _selectedVehicleId,
-      'serviceId': _selectedServiceId,
-      'bookingDate': _selectedDate,
-      'bookingTime': _selectedTime,
-      'createdAt': DateTime.now(),
-    };
+    setLoading(true);
+
+    final result = await controller.createBooking(
+      userId: userId,
+      vehicleId: _selectedVehicleId!,
+      serviceId: _selectedServiceId!,
+      bookingDate: _selectedDate!,
+      bookingTime: _selectedTime!,
+    );
+
+    setLoading(false);
+    return result;
   }
 
-  /// Clear 
-  void clearBooking() {
+  // ---------------------------------------------------------
+  // STREAM USER BOOKINGS
+  // ---------------------------------------------------------
+  Stream<List<BookingModel>> userBookingStream(String userId) {
+    return controller.getUserBookings(userId);
+  }
+
+  // ---------------------------------------------------------
+  // RESET BOOKING
+  // ---------------------------------------------------------
+  void resetBooking() {
     _selectedVehicleId = null;
     _selectedVehicleName = null;
     _selectedServiceId = null;
     _selectedServiceName = null;
     _selectedDate = null;
     _selectedTime = null;
-    notifyListeners();
-  }
-
-  /// Clear everything
-  void reset() {
-    clearBooking();
-    clearHistory();
-    _isLoading = false;
     notifyListeners();
   }
 }

@@ -43,8 +43,8 @@ class BookingContinueButton extends StatelessWidget {
         // SAVE SELECTION TO PROVIDER ------------------------------------
         final booking = context.read<BookingProvider>();
 
-        booking.setVehicle(vehicleCtrl.text);
-        booking.setService(serviceCtrl.text);
+        booking.setVehicleName(vehicleCtrl.text);
+        booking.setServiceName(serviceCtrl.text);
 
         // convert dd/mm/yyyy → DateTime
         try {
@@ -65,7 +65,7 @@ class BookingContinueButton extends StatelessWidget {
           return;
         }
 
-        booking.setTime(timeCtrl.text);
+        booking.selectTime(timeCtrl.text);
 
         // GO TO SUMMARY SCREEN -----------------------------------------
         Navigator.pushNamed(context, "/booking-summary");

@@ -1,42 +1,24 @@
-import 'dart:io';
+import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_sizes.dart';
+import 'package:autocare/contollers/edit_profile_provider.dart';
+import 'package:autocare/contollers/user_provider.dart';
 import 'package:autocare/views/profile/widgets/profile/edit_profile_form.dart';
 import 'package:autocare/views/profile/widgets/profile/edit_profile_image_picker.dart';
 import 'package:autocare/views/profile/widgets/profile/edit_profile_save_button.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_sizes.dart';
-import '../../contollers/user_provider.dart';
 
-class EditProfileView extends StatefulWidget {
+class EditProfileView extends StatelessWidget {
   const EditProfileView({super.key});
-  @override
-  State<EditProfileView> createState() => _EditProfileViewState();
-}
-class _EditProfileViewState extends State<EditProfileView> {
-  final ImagePicker picker = ImagePicker();
-  File? newImage;
-  bool isLoading = false;
-  late TextEditingController nameCtrl;
-  late TextEditingController emailCtrl;
-  late TextEditingController phoneCtrl;
-  @override
-  void initState() {
-    super.initState();
-    final user = Provider.of<UserProvider>(context, listen: false).user;
-    nameCtrl = TextEditingController(text: user?.name ?? "");
-    emailCtrl = TextEditingController(text: user?.email ?? "");
-    phoneCtrl = TextEditingController(text: user?.phone ?? "");
-  }
-  Future<void> pickImage() async {
-    final picked = await picker.pickImage(source: ImageSource.gallery);
-    if (picked != null) setState(() => newImage = File(picked.path));
-  }
+
   @override
   Widget build(BuildContext context) {
-    final userProvider = context.watch<UserProvider>();
-    final user = userProvider.user;
+    final userProvider = context.read<UserProvider>();
+    final edit = context.watch<EditProfileProvider>();
+    Future.microtask(() {
+      edit.loadUser(userProvider.user);
+    });
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -50,27 +32,33 @@ class _EditProfileViewState extends State<EditProfileView> {
         child: Column(
           children: [
             const SizedBox(height: AppSizes.paddingMD),
+            /// IMAGE PICKER
             EditProfileImagePicker(
-              newImage: newImage,
-              userImage: user?.profileImage,
-              onPick: pickImage,
+              newImage: edit.newImage,
+              userImage: userProvider.user?.profileImage,
+              onPick: edit.pickImage,
             ),
             const SizedBox(height: AppSizes.paddingMD),
+            /// TEXT FORM FIELDS 
             EditProfileForm(
-              nameCtrl: nameCtrl,
-              emailCtrl: emailCtrl,
-              phoneCtrl: phoneCtrl,
+              nameCtrl: edit.nameCtrl,
+              emailCtrl: edit.emailCtrl,
+              phoneCtrl: edit.phoneCtrl,
             ),
             const SizedBox(height: AppSizes.paddingMD),
+            /// SAVE BUTTON
             EditProfileSaveButton(
-              isLoading: isLoading,
-              userProvider: userProvider,
-              name: nameCtrl.text.trim(),
-              email: emailCtrl.text.trim(),
-              phone: phoneCtrl.text.trim(),
-              image: newImage,
+              isLoading: edit.isLoading,
+              onSave: () async {
+                final success = await edit.saveProfile(userId: userProvider.userId!);
+                if (success) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Profile Updated")),
+                  );
+                  Navigator.pop(context);
+                }
+              },
             ),
-            const SizedBox(height: AppSizes.paddingMD),
           ],
         ),
       ),

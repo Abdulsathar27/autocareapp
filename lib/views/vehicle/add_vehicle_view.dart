@@ -1,76 +1,95 @@
-import 'dart:io';
-import 'package:autocare/views/vehicle/widgets/vehicle/add/add_vehicle_form_fields.dart';
-import 'package:autocare/views/vehicle/widgets/vehicle/add/add_vehicle_image_picker.dart';
-import 'package:autocare/views/vehicle/widgets/vehicle/add/add_vehicle_submit_button.dart';
-import 'package:autocare/views/vehicle/widgets/vehicle/add/add_vehicle_type_dropdown.dart';
+import 'package:autocare/contollers/add_vehicle_form_provider.dart';
+import 'package:autocare/contollers/user_auth_provider.dart';
+import 'package:autocare/contollers/vehicle_provider.dart';
+import 'package:autocare/services/vehicle_controller.dart';
+import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_sizes.dart';
-import '../../contollers/vehicle_provider.dart';
-import '../../contollers/user_auth_provider.dart';
+import 'widgets/vehicle/add/add_vehicle_image_picker.dart';
+import 'widgets/vehicle/add/add_vehicle_form_fields.dart';
+import 'widgets/vehicle/add/add_vehicle_type_dropdown.dart';
+import 'widgets/vehicle/add/add_vehicle_submit_button.dart';
 
-
-class AddVehicleView extends StatefulWidget {
+class AddVehicleView extends StatelessWidget {
   const AddVehicleView({super.key});
-  @override
-  State<AddVehicleView> createState() => _AddVehicleViewState();
-}
-class _AddVehicleViewState extends State<AddVehicleView> {
-  final nameCtrl = TextEditingController();
-  final modelCtrl = TextEditingController();
-  final numberCtrl = TextEditingController();
-  final picker = ImagePicker();
-  String? selectedType;
-  File? selectedImage;
-  bool isLoading = false;
-  Future<void> pickImage() async {
-    final picked = await picker.pickImage(source: ImageSource.gallery);
-    if (picked != null) setState(() => selectedImage = File(picked.path));
-  }
+
   @override
   Widget build(BuildContext context) {
+    final form = context.watch<AddVehicleFormProvider>();
     final auth = context.read<UserAuthProvider>();
-    final vehicleProvider = context.watch<VehicleProvider>();
+    final vehicleProvider = context.read<VehicleProvider>();
+    final controller = VehicleController();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        title: const Text("Add Vehicle"),
         centerTitle: true,
         elevation: 0,
-        title: const Text("Add Vehicle"),
+        backgroundColor: AppColors.background,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.paddingMD),
         child: Column(
           children: [
+            // IMAGE PICKER
             AddVehicleImagePicker(
-              image: selectedImage,
-              onPick: pickImage,
+              image: form.selectedImage,
+              onPick: form.pickImage,
             ),
+
             const SizedBox(height: 30),
+
+            // TEXT FIELDS
             AddVehicleFormFields(
-              nameCtrl: nameCtrl,
-              modelCtrl: modelCtrl,
-              numberCtrl: numberCtrl,
+              nameCtrl: form.nameCtrl,
+              modelCtrl: form.modelCtrl,
+              numberCtrl: form.numberCtrl,
             ),
+
             const SizedBox(height: 20),
+
+            // DROPDOWN
             AddVehicleTypeDropdown(
-              selectedType: selectedType,
-              onChanged: (value) => setState(() => selectedType = value),
+              selectedType: form.selectedType,
+              onChanged: form.setType,
             ),
+
             const SizedBox(height: 30),
+
+            // SUBMIT BUTTON
             AddVehicleSubmitButton(
-              isLoading: isLoading,
-              selectedType: selectedType,
-              name: nameCtrl.text.trim(),
-              model: modelCtrl.text.trim(),
-              number: numberCtrl.text.trim(),
-              image: selectedImage,
-              auth: auth,
-              provider: vehicleProvider,
-              onSuccess: () => Navigator.pop(context),
+              isLoading: form.isSubmitting,
+              onPressed: () async {
+                if (!form.isValid()) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Please fill all fields"),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                form.setSubmitting(true);
+
+                await controller.addVehicle(
+                  context: context,
+                  userId: auth.currentUserId!,
+                  vehicleName: form.nameCtrl.text.trim(),
+                  vehicleModel: form.modelCtrl.text.trim(),
+                  vehicleNumber: form.numberCtrl.text.trim(),
+                  vehicleType: form.selectedType!,
+                  imageUrl: null, // upload later
+                  provider: vehicleProvider,
+                );
+
+                form.setSubmitting(false);
+                form.resetForm();
+
+                Navigator.pop(context);
+              },
             ),
           ],
         ),

@@ -3,22 +3,34 @@ import '../models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserAuthProvider extends ChangeNotifier {
-  bool _isLoading = false;
+  // LOGIN LOADING STATES
+  bool _isEmailLoading = false;
+  bool _isGoogleLoading = false;
+
+  // USER (FIRESTORE MODEL)
   UserModel? _user;
 
-  bool get isLoading => _isLoading;
+  // GETTERS
+  bool get isEmailLoading => _isEmailLoading;
+  bool get isGoogleLoading => _isGoogleLoading;
+  UserModel? get currentUser => _user;
 
-  void setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
-
-  // Firebase user 
+  // Firebase User
   User? get firebaseUser => FirebaseAuth.instance.currentUser;
   String? get currentUserId => firebaseUser?.uid;
 
-  UserModel? get currentUser => _user;
+  // SET LOADING STATES
+  void setEmailLoading(bool value) {
+    _isEmailLoading = value;
+    notifyListeners();
+  }
 
+  void setGoogleLoading(bool value) {
+    _isGoogleLoading = value;
+    notifyListeners();
+  }
+
+  // SET USER
   void setUser(UserModel user) {
     _user = user;
     notifyListeners();

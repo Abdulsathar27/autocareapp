@@ -1,120 +1,50 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-
-import '../constants/firebase_keys.dart';
+import '../repositories/booking_repository.dart';
 import '../models/booking_model.dart';
-import '../contollers/booking_provider.dart';
-import '../core/utils/helpers.dart';
+import '../constants/firebase_keys.dart';
 
 class BookingController {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final BookingRepository repo = BookingRepository();
 
-  
-  // CREATE BOOKING 
-  Future<void> createBooking({
-    required BuildContext context,
+  // CREATE booking (No UI here)
+  Future<bool> createBooking({
     required String userId,
     required String vehicleId,
     required String serviceId,
     required DateTime bookingDate,
     required String bookingTime,
-    required BookingProvider provider,
   }) async {
     try {
-      provider.setLoading(true);
-
-    
-      //  UNIQUE BOOKING ID  
       final bookingId =
           "${userId}_${vehicleId}_${bookingDate.toIso8601String()}";
 
-      final docRef =
-          firestore.collection(FirebaseKeys.bookings).doc(bookingId);
+      final data = {
+        FirebaseKeys.userId: userId,
+        FirebaseKeys.vehicleId: vehicleId,
+        FirebaseKeys.serviceId: serviceId,
+        FirebaseKeys.bookingDate: bookingDate,
+        FirebaseKeys.bookingTime: bookingTime,
+        FirebaseKeys.bookingStatus: FirebaseKeys.statusPending,
+        FirebaseKeys.createdAt: DateTime.now(),
+        FirebaseKeys.updatedAt: DateTime.now(),
+      };
 
-      await docRef.set(
-        {
-          FirebaseKeys.userId: userId,
-          FirebaseKeys.vehicleId: vehicleId,
-          FirebaseKeys.serviceId: serviceId,
-          FirebaseKeys.bookingDate: bookingDate,
-          FirebaseKeys.bookingTime: bookingTime,
-          FirebaseKeys.bookingStatus: FirebaseKeys.statusPending,
-          FirebaseKeys.createdAt: FieldValue.serverTimestamp(),
-          FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
-        },
-        SetOptions(merge: true), 
-      );
+      await repo.createBooking(bookingId, data);
 
-      if (context.mounted) {
-        Helpers.showSnackBar(context, "Booking Successful!");
-      }
-    } catch (e) {
-      if (context.mounted) {
-        Helpers.showSnackBar(
-          context,
-          "Error: $e",
-          backgroundColor: Colors.red,
-        );
-      }
-    } finally {
-      provider.setLoading(false);
+      return true;
+    } catch (_) {
+      return false;
     }
   }
 
-  
-  // STREAM USER BOOKINGS
   Stream<List<BookingModel>> getUserBookings(String userId) {
-    return firestore
-        .collection(FirebaseKeys.bookings)
-        .where(FirebaseKeys.userId, isEqualTo: userId)
-        .orderBy(FirebaseKeys.createdAt, descending: true)
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) => BookingModel.fromMap(doc.data(), doc.id))
-              .toList(),
-        );
-  }
-  // ADMIN
-  Stream<List<BookingModel>> getAllBookings() {
-    return firestore
-        .collection(FirebaseKeys.bookings)
-        .orderBy(FirebaseKeys.createdAt, descending: true)
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) => BookingModel.fromMap(doc.data(), doc.id))
-              .toList(),
-        );
-  }
-  // UPDATE BOOKING STATUS
-  Future<void> updateBookingStatus({
-    required String bookingId,
-    required String newStatus,
-  }) async {
-    await firestore.collection(FirebaseKeys.bookings).doc(bookingId).update({
-      FirebaseKeys.bookingStatus: newStatus,
-      FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
-    });
-  }
-  // ADD ADMIN NOTE
-  Future<void> addAdminNote({
-    required String bookingId,
-    required String note,
-  }) async {
-    await firestore.collection(FirebaseKeys.bookings).doc(bookingId).update({
-      FirebaseKeys.adminNote: note,
-      FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
-    });
+    return repo.getUserBookings(userId);
   }
 
-  
-  // CANCEL BOOKING
-  Future<void> cancelBooking(String bookingId) async {
-    await firestore.collection(FirebaseKeys.bookings).doc(bookingId).update({
-      FirebaseKeys.bookingStatus: FirebaseKeys.statusCancelled,
-      FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
-    });
-  }
+  Future<void> cancelBooking(String id) => repo.cancelBooking(id);
+
+  Future<void> updateStatus(String id, String status) =>
+      repo.updateBookingStatus(id, status);
+
+  Future<void> addAdminNote(String id, String note) =>
+      repo.addAdminNote(id, note);
 }

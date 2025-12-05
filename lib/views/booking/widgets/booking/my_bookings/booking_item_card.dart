@@ -1,55 +1,29 @@
-// lib/widgets/my_bookings/booking_item_card.dart
-
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
-import 'package:autocare/constants/firebase_keys.dart';
+import 'package:autocare/models/booking_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'booking_status_chip.dart';
 
 class BookingItemCard extends StatelessWidget {
-  final Map<String, dynamic> data;
-  final String bookingId;
+  final BookingModel model;
 
   const BookingItemCard({
     super.key,
-    required this.data,
-    required this.bookingId,
+    required this.model,
   });
 
   @override
   Widget build(BuildContext context) {
-    // -------------------------
-    // SERVICE NAME (safe)
-    // -------------------------
-    final service = data[FirebaseKeys.serviceId] ?? "Service";
+    final service = model.serviceId;
+    final rawDate = model.bookingDate;
 
-    // -------------------------
-    // DATE (timestamp or datetime)
-    // -------------------------
-    DateTime? rawDate;
+    final date =
+        "${rawDate.day.toString().padLeft(2, '0')}-${rawDate.month.toString().padLeft(2, '0')}-${rawDate.year}";
 
-    if (data['bookingDate'] is Timestamp) {
-      rawDate = (data['bookingDate'] as Timestamp).toDate();
-    } else if (data['bookingDate'] is DateTime) {
-      rawDate = data['bookingDate'];
-    }
-
-    final date = rawDate != null
-        ? "${rawDate.day.toString().padLeft(2, '0')}-${rawDate.month.toString().padLeft(2, '0')}-${rawDate.year}"
-        : "-";
-
-    // -------------------------
-    // TIME
-    // -------------------------
-    final time = data['bookingTime'] ?? "-";
-
-    // -------------------------
-    // STATUS
-    // -------------------------
-    final status = data['bookingStatus'] ?? "pending";
+    final time = model.bookingTime;
+    final status = model.status;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 18),
@@ -64,13 +38,10 @@ class BookingItemCard extends StatelessWidget {
           ),
         ],
       ),
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // -------------------------
-          // TOP GRADIENT BAR
-          // -------------------------
+          // HEADER
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
@@ -88,11 +59,8 @@ class BookingItemCard extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(
-                  Icons.miscellaneous_services,
-                  color: AppColors.background,
-                  size: 24,
-                ),
+                const Icon(Icons.miscellaneous_services,
+                    color: Colors.white, size: 24),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -100,7 +68,7 @@ class BookingItemCard extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.background,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -108,9 +76,7 @@ class BookingItemCard extends StatelessWidget {
             ),
           ),
 
-          // -------------------------
-          // DETAILS SECTION
-          // -------------------------
+          // DETAILS
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -133,9 +99,6 @@ class BookingItemCard extends StatelessWidget {
     );
   }
 
-  // -------------------------------------------------------
-  // REUSABLE ROW WIDGET
-  // -------------------------------------------------------
   Widget _infoRow(
     IconData icon,
     String label,
