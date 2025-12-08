@@ -11,8 +11,7 @@ class ServiceCard extends StatelessWidget {
     required this.icon,
     required this.label,
   });
-  // ROUTING MAP 
-  String _getRoute() {
+  String getRoute() {
     switch (label) {
       case "General Service":
         return "/service-general";
@@ -32,8 +31,7 @@ class ServiceCard extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(AppSizes.radiusLG),
       splashColor: AppColors.primaryGreen.withAlpha(25),
-      onTap: () => Navigator.pushNamed(context, _getRoute()),
-
+      onTap: () => Navigator.pushNamed(context, getRoute()),
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.cardBackground,

@@ -11,7 +11,10 @@ import 'package:provider/provider.dart';
 class VehicleStreamBuilder extends StatelessWidget {
   final String userId;
 
-  const VehicleStreamBuilder({super.key, required this.userId});
+  const VehicleStreamBuilder({
+    super.key,
+    required this.userId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,34 +22,45 @@ class VehicleStreamBuilder extends StatelessWidget {
 
     return StreamBuilder<List<VehicleModel>>(
       stream: controller.getUserVehicles(userId),
+
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              "Something went wrong.\nPlease try again later.",
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
+            ),
+          );
+        }
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
 
         final vehicles = snapshot.data!;
-
-        // Sync Firestore → Provider
-        context.read<VehicleProvider>().setVehiclesFromStream(vehicles);
-
-        if (vehicles.isEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.read<VehicleProvider>().setVehiclesFromStream(vehicles);
+        });
+         if (vehicles.isEmpty) {
           return const VehicleEmptyView();
         }
-
-        return ListView.builder(
+        
+        return ListView.separated(
           padding: const EdgeInsets.all(AppSizes.paddingMD),
           itemCount: vehicles.length,
+          separatorBuilder: (_, _) => const SizedBox(height: 12),
           itemBuilder: (_, index) {
             final vehicle = vehicles[index];
 
             return GestureDetector(
               onTap: () {
-                // Save selected vehicle for Booking
                 context.read<BookingProvider>().selectVehicle(
                       vehicle.id,
                       vehicle.vehicleName,
                     );
-
                 Navigator.pop(context);
               },
               child: VehicleCard(vehicle: vehicle),

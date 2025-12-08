@@ -5,9 +5,7 @@ import '../services/booking_controller.dart';
 class BookingProvider extends ChangeNotifier {
   final BookingController controller = BookingController();
 
-  // ---------------------------------------------------------
   // LOADING STATE
-  // ---------------------------------------------------------
   bool _loading = false;
   bool get isLoading => _loading;
   void setLoading(bool v) {
@@ -15,9 +13,7 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---------------------------------------------------------
   // VEHICLE SELECTION
-  // ---------------------------------------------------------
   String? _selectedVehicleId;
   String? get selectedVehicleId => _selectedVehicleId;
 
@@ -34,9 +30,7 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---------------------------------------------------------
   // SERVICE SELECTION
-  // ---------------------------------------------------------
   String? _selectedServiceId;
   String? get selectedServiceId => _selectedServiceId;
 
@@ -54,9 +48,7 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---------------------------------------------------------
   // DATE SELECTION
-  // ---------------------------------------------------------
   DateTime? _selectedDate;
   DateTime? get selectedDate => _selectedDate;
 
@@ -73,9 +65,7 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---------------------------------------------------------
   // TIME SELECTION
-  // ---------------------------------------------------------
   String? _selectedTime;
   String? get selectedTime => _selectedTime;
 
@@ -84,45 +74,37 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---------------------------------------------------------
   // BOOKING COMPLETION CHECK
-  // ---------------------------------------------------------
   bool get isBookingComplete =>
       _selectedVehicleId != null &&
       _selectedServiceId != null &&
       _selectedDate != null &&
       _selectedTime != null;
 
-  // ---------------------------------------------------------
   // CREATE BOOKING
-  // ---------------------------------------------------------
   Future<bool> createBooking(String userId) async {
     if (!isBookingComplete) return false;
 
     setLoading(true);
 
     final result = await controller.createBooking(
-      userId: userId,
       vehicleId: _selectedVehicleId!,
       serviceId: _selectedServiceId!,
       bookingDate: _selectedDate!,
       bookingTime: _selectedTime!,
+      userId: userId,
     );
 
     setLoading(false);
     return result;
   }
 
-  // ---------------------------------------------------------
   // STREAM USER BOOKINGS
-  // ---------------------------------------------------------
   Stream<List<BookingModel>> userBookingStream(String userId) {
     return controller.getUserBookings(userId);
   }
 
-  // ---------------------------------------------------------
   // RESET BOOKING
-  // ---------------------------------------------------------
   void resetBooking() {
     _selectedVehicleId = null;
     _selectedVehicleName = null;

@@ -4,7 +4,6 @@ import '../constants/firebase_keys.dart';
 
 class BookingController {
   final BookingRepository repo = BookingRepository();
-
   // CREATE booking (No UI here)
   Future<bool> createBooking({
     required String userId,
@@ -16,7 +15,6 @@ class BookingController {
     try {
       final bookingId =
           "${userId}_${vehicleId}_${bookingDate.toIso8601String()}";
-
       final data = {
         FirebaseKeys.userId: userId,
         FirebaseKeys.vehicleId: vehicleId,
@@ -27,24 +25,18 @@ class BookingController {
         FirebaseKeys.createdAt: DateTime.now(),
         FirebaseKeys.updatedAt: DateTime.now(),
       };
-
       await repo.createBooking(bookingId, data);
-
       return true;
     } catch (_) {
       return false;
     }
   }
-
   Stream<List<BookingModel>> getUserBookings(String userId) {
     return repo.getUserBookings(userId);
   }
-
   Future<void> cancelBooking(String id) => repo.cancelBooking(id);
-
   Future<void> updateStatus(String id, String status) =>
       repo.updateBookingStatus(id, status);
-
   Future<void> addAdminNote(String id, String note) =>
       repo.addAdminNote(id, note);
 }

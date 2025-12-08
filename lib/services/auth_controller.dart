@@ -8,14 +8,11 @@ import '../contollers/user_provider.dart';
 class AuthResult {
   final bool success;
   final String? error;
-
   AuthResult({required this.success, this.error});
 }
-
 class AuthController {
   final AuthRepository authRepo = AuthRepository();
   final UserRepository userRepo = UserRepository();
-
   // LOAD USER
   Future<void> loadUser(String uid, UserProvider userProvider) async {
     final user = await userRepo.getUser(uid);
@@ -23,7 +20,6 @@ class AuthController {
       userProvider.setUser(user);
     }
   }
-
   // LOGIN WITH EMAIL
   Future<AuthResult> loginWithEmail({
     required String email,
@@ -32,16 +28,13 @@ class AuthController {
   }) async {
     try {
       authProvider.setEmailLoading(true);
-
       final firebaseUser = await authRepo.loginWithEmail(
         email: email,
         password: password,
       );
-
       if (firebaseUser == null) {
         return AuthResult(success: false, error: "Invalid credentials");
       }
-
       return AuthResult(success: true);
     } catch (e) {
       return AuthResult(success: false, error: e.toString());
@@ -49,7 +42,6 @@ class AuthController {
       authProvider.setEmailLoading(false);
     }
   }
-
   // LOGIN WITH GOOGLE
   Future<AuthResult> loginWithGoogle({
     required UserAuthProvider authProvider,
@@ -63,10 +55,8 @@ class AuthController {
       if (firebaseUser == null) {
         return AuthResult(success: false, error: "Google sign-in cancelled");
       }
-
       // Check Firestore for user
       final existing = await userRepo.getUser(firebaseUser.uid);
-
       if (existing == null) {
         final newUser = UserModel(
           id: firebaseUser.uid,
@@ -77,13 +67,11 @@ class AuthController {
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         );
-
         await userRepo.createUser(newUser);
         userProvider?.setUser(newUser);
       } else {
         userProvider?.setUser(existing);
       }
-
       return AuthResult(success: true);
     } catch (e) {
       log(e.toString());
@@ -92,7 +80,6 @@ class AuthController {
       authProvider.setGoogleLoading(false);
     }
   }
-
   // REGISTER WITH EMAIL
   Future<AuthResult> registerWithEmail({
     required String name,
@@ -109,11 +96,9 @@ class AuthController {
         email: email,
         password: password,
       );
-
       if (firebaseUser == null) {
         return AuthResult(success: false, error: "Registration failed");
       }
-
       final newUser = UserModel(
         id: firebaseUser.uid,
         name: name,
@@ -123,11 +108,8 @@ class AuthController {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
-
       await userRepo.createUser(newUser);
-
       userProvider?.setUser(newUser);
-
       return AuthResult(success: true);
     } catch (e) {
       return AuthResult(success: false, error: e.toString());

@@ -7,10 +7,7 @@ import '../core/utils/helpers.dart';
 
 class VehicleController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  // ---------------------------------------------------------
   // ADD VEHICLE
-  // ---------------------------------------------------------
   Future<bool> addVehicle({
     required BuildContext context,
     required String userId,
@@ -23,9 +20,7 @@ class VehicleController {
   }) async {
     try {
       provider.setLoading(true);
-
       final docRef = _firestore.collection(FirebaseKeys.vehicles).doc();
-
       final newVehicle = VehicleModel(
         id: docRef.id,
         userId: userId,
@@ -37,7 +32,6 @@ class VehicleController {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
-
       await docRef.set({
         FirebaseKeys.userId: userId,
         FirebaseKeys.vehicleName: vehicleName,
@@ -48,14 +42,11 @@ class VehicleController {
         FirebaseKeys.createdAt: FieldValue.serverTimestamp(),
         FirebaseKeys.updatedAt: FieldValue.serverTimestamp(),
       });
-
       // Update provider locally (safe)
       provider.addVehicle(newVehicle);
-
       if (context.mounted) {
         Helpers.showSnackBar(context, "Vehicle added successfully!");
       }
-
       return true;
     } catch (e) {
       if (context.mounted) {
@@ -70,10 +61,7 @@ class VehicleController {
       provider.setLoading(false);
     }
   }
-
-  // ---------------------------------------------------------
   // UPDATE VEHICLE
-  // ---------------------------------------------------------
   Future<bool> updateVehicle({
     required BuildContext context,
     required VehicleModel vehicle,
@@ -81,21 +69,16 @@ class VehicleController {
   }) async {
     try {
       provider.setLoading(true);
-
       final data = vehicle.toMap()
         ..[FirebaseKeys.updatedAt] = FieldValue.serverTimestamp();
-
       await _firestore
           .collection(FirebaseKeys.vehicles)
           .doc(vehicle.id)
           .update(data);
-
       provider.updateVehicleLocal(vehicle);
-
       if (context.mounted) {
         Helpers.showSnackBar(context, "Vehicle updated successfully!");
       }
-
       return true;
     } catch (e) {
       if (context.mounted) {
@@ -111,9 +94,7 @@ class VehicleController {
     }
   }
 
-  // ---------------------------------------------------------
   // DELETE VEHICLE
-  // ---------------------------------------------------------
   Future<bool> deleteVehicle(
     String vehicleId, {
     BuildContext? context,
@@ -121,10 +102,8 @@ class VehicleController {
   }) async {
     try {
       await _firestore.collection(FirebaseKeys.vehicles).doc(vehicleId).delete();
-
       // Update provider safely
       provider?.deleteVehicle(vehicleId);
-
       if (context?.mounted ?? false) {
         Helpers.showSnackBar(
           context!,
@@ -132,7 +111,6 @@ class VehicleController {
           backgroundColor: Colors.red,
         );
       }
-
       return true;
     } catch (e) {
       if (context?.mounted ?? false) {
@@ -145,10 +123,7 @@ class VehicleController {
       return false;
     }
   }
-
-  // ---------------------------------------------------------
   // STREAM: FETCH ALL USER VEHICLES
-  // ---------------------------------------------------------
   Stream<List<VehicleModel>> getUserVehicles(String userId) {
     return _firestore
         .collection(FirebaseKeys.vehicles)
@@ -166,18 +141,13 @@ class VehicleController {
               .toList(),
         );
   }
-
-  // ---------------------------------------------------------
   // GET SINGLE VEHICLE BY ID
-  // ---------------------------------------------------------
   Future<VehicleModel?> getVehicleById(String vehicleId) async {
     final doc = await _firestore
         .collection(FirebaseKeys.vehicles)
         .doc(vehicleId)
         .get();
-
     if (!doc.exists) return null;
-
     return VehicleModel.fromMap(
       doc.data()! as Map<String, dynamic>,
       doc.id,

@@ -63,7 +63,7 @@ class AuthRepository {
     }
   }
 
-  /// Logout (clears Google session too)
+  /// Logout (clears Google session too) not using anywhere
   Future<void> logout() async {
     try {
       
