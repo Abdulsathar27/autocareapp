@@ -1,4 +1,5 @@
 import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/contollers/booking_provider.dart';
 import 'package:autocare/contollers/user_auth_provider.dart';
 import 'package:autocare/core/utils/helpers.dart';
@@ -15,7 +16,7 @@ class BookingSummaryConfirmButton extends StatelessWidget {
     final isLoading = booking.isLoading;
 
     return CustomButton(
-      text: "Confirm Booking",
+      text: AppStrings.confirmBooking,
       isLoading: isLoading,
       onPressed: isLoading
           ? null
@@ -33,7 +34,7 @@ class BookingSummaryConfirmButton extends StatelessWidget {
     if (userId == null) {
       Helpers.showSnackBar(
         context,
-        "User not logged in!",
+        AppStrings.errorSomethingWrong,
         backgroundColor: AppColors.redButton,
       );
       return;
@@ -42,7 +43,7 @@ class BookingSummaryConfirmButton extends StatelessWidget {
     if (!booking.isBookingComplete) {
       Helpers.showSnackBar(
         context,
-        "Please complete all booking fields.",
+        AppStrings.errorCompleteBookingFields,
         backgroundColor: AppColors.redButton,
       );
       return;
@@ -53,7 +54,7 @@ class BookingSummaryConfirmButton extends StatelessWidget {
     if (!success) {
       Helpers.showSnackBar(
         context,
-        "Booking failed. Please try again.",
+        AppStrings.errorSomethingWrong,
         backgroundColor: AppColors.redButton,
       );
       return;

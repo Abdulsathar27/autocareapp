@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../constants/app_colors.dart';
@@ -11,7 +12,7 @@ class RegisterFooter extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Don't have an account?",
+          AppStrings.registerFooter,
           style: GoogleFonts.poppins(
             fontSize: 14,
             color: AppColors.textSecondary,
@@ -20,7 +21,7 @@ class RegisterFooter extends StatelessWidget {
         TextButton(
           onPressed: () => Navigator.pushNamed(context, "/register"),
           child: Text(
-            "Create Account",
+            AppStrings.registerTitle,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
               color: AppColors.primaryGreen,

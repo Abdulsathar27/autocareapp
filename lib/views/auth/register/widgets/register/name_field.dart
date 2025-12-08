@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/core/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
       
@@ -9,8 +10,8 @@ class NameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
-      label: "Full Name",
-      hint: "Enter your name",
+      label: AppStrings.fullName,
+      hint: AppStrings.enterYourName,
       controller: controller,
     );
   }

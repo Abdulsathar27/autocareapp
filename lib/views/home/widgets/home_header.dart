@@ -1,5 +1,6 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/contollers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,7 +37,7 @@ class HomeHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Welcome,",
+              AppStrings.welcome,
               style: GoogleFonts.poppins(
                 color: AppColors.textSecondary,
                 fontSize: 14,

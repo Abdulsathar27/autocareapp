@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../constants/app_colors.dart';
@@ -24,7 +25,7 @@ class LoginHeader extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          "Welcome Back!",
+          AppStrings.loginTitle,
           style: GoogleFonts.poppins(
             fontSize: 28,
             fontWeight: FontWeight.w700,
@@ -33,7 +34,7 @@ class LoginHeader extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          "Sign in to continue your service journey",
+          AppStrings.loginSubtitle,
           style: GoogleFonts.poppins(
             fontSize: 14,
             color: AppColors.textSecondary,

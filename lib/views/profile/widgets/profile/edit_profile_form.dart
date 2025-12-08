@@ -1,4 +1,5 @@
 import 'package:autocare/constants/app_sizes.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/core/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -17,22 +18,22 @@ class EditProfileForm extends StatelessWidget {
     return Column(
       children: [
         CustomTextField(
-          label: "Full Name",
+          label: AppStrings.fullName,
           controller: nameCtrl,
-          hint: "Enter your name",
+          hint: AppStrings.enterYourName,
         ),
         const SizedBox(height: AppSizes.paddingMD),
         CustomTextField(
-          label: "Email",
+          label: AppStrings.email,
           controller: emailCtrl,
-          hint: "Enter your email",
+          hint: AppStrings.enterYourEmail,
           keyboardType: TextInputType.emailAddress,
         ),
         const SizedBox(height: AppSizes.paddingMD),
         CustomTextField(
-          label: "Phone Number",
+          label: AppStrings.phoneNumber,
           controller: phoneCtrl,
-          hint: "Enter your phone number",
+          hint: AppStrings.enterYourPhone,
           keyboardType: TextInputType.phone,
         ),
       ],

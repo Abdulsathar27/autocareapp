@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/views/booking/widgets/booking/my_bookings/booking_empty_state.dart';
 import 'package:autocare/views/booking/widgets/booking/my_bookings/booking_item_card.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class MyBookingsView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text("My Bookings"),
+        title: const Text(AppStrings.myBookings),
         centerTitle: true,
         backgroundColor: AppColors.background,
       ),

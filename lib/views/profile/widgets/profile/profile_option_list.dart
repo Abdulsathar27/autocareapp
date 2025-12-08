@@ -1,5 +1,6 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'profile_option_item.dart';
 
@@ -32,13 +33,13 @@ class ProfileOptionList extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ProfileOptionItem(icon: Icons.edit, label: "Edit Profile", onTap: onEdit),
+          ProfileOptionItem(icon: Icons.edit, label: AppStrings.editProfile, onTap: onEdit),
           divider(),
-          ProfileOptionItem(icon: Icons.directions_car, label: "My Vehicles", onTap: onVehicles),
+          ProfileOptionItem(icon: Icons.directions_car, label: AppStrings.vehicles, onTap: onVehicles),
           divider(),
-          ProfileOptionItem(icon: Icons.event_note, label: "My Bookings", onTap: onBookings),
+          ProfileOptionItem(icon: Icons.event_note, label: AppStrings.myBookings , onTap: onBookings),
           divider(),
-          ProfileOptionItem(icon: Icons.settings, label: "Settings", onTap: onSettings),
+          ProfileOptionItem(icon: Icons.settings, label: AppStrings.settings, onTap: onSettings),
         ],
       ),
     );

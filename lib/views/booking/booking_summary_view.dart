@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/views/booking/widgets/booking/summary/booking_summary_card.dart';
 import 'package:autocare/views/booking/widgets/booking/summary/booking_summary_confirm_button.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class BookingSummaryView extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "Booking Summary",
+          AppStrings.bookingSummary,
           style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),
         ),
       ),

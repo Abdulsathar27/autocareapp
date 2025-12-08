@@ -1,5 +1,6 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'service_card.dart';
@@ -12,7 +13,7 @@ class ServicesSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Services",
+          AppStrings.services,
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -28,10 +29,10 @@ class ServicesSection extends StatelessWidget {
           mainAxisSpacing: AppSizes.paddingMD,
           childAspectRatio: 1.2,
           children: const [
-            ServiceCard(icon: Icons.car_repair, label: "General Service"),
-            ServiceCard(icon: Icons.build_circle, label: "Repair Work"),
-            ServiceCard(icon: Icons.local_car_wash, label: "Car Wash"),
-            ServiceCard(icon: Icons.tire_repair, label: "Tyre Service"),
+            ServiceCard(icon: Icons.car_repair, label: AppStrings.generalService),
+            ServiceCard(icon: Icons.build_circle, label: AppStrings.repairWork),
+            ServiceCard(icon: Icons.local_car_wash, label: AppStrings.carWash),
+            ServiceCard(icon: Icons.tire_repair, label: AppStrings.tyreService),
           ],
         ),
       ],

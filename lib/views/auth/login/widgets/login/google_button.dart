@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../constants/app_colors.dart';
@@ -36,7 +37,7 @@ class GoogleSignInButton extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  "Continue with Google",
+                  AppStrings.continueWithGoogle,
                   style: GoogleFonts.poppins(
                     color: AppColors.textPrimary,
                     fontSize: 15,

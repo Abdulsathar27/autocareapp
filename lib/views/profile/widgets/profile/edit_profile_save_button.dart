@@ -1,4 +1,5 @@
 
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class EditProfileSaveButton extends StatelessWidget {
@@ -17,7 +18,7 @@ class EditProfileSaveButton extends StatelessWidget {
       onPressed: isLoading ? null : onSave,
       child: isLoading
           ? const CircularProgressIndicator()
-          : const Text("Save Changes"),
+          : const Text(AppStrings.saveChanges),
     );
   }
 }

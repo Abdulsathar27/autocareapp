@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/views/profile/widgets/profile/logout_button.dart';
 import 'package:autocare/views/profile/widgets/profile/profile_header.dart';
 import 'package:autocare/views/profile/widgets/profile/profile_info.dart';
@@ -21,7 +22,7 @@ class ProfileView extends StatelessWidget {
         elevation: 0,
         backgroundColor: AppColors.background,
         centerTitle: true,
-        title: const Text("Profile"),
+        title: const Text(AppStrings.profile),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.paddingMD),
@@ -48,7 +49,7 @@ class ProfileView extends StatelessWidget {
                 userProvider.clearUser();
                 Navigator.pushNamedAndRemoveUntil(
                     context, "/login", (_) => false);
-                Helpers.showSnackBar(context, "Logged out",
+                Helpers.showSnackBar(context, AppStrings.logout,
                     backgroundColor: AppColors.redButton);
               },
             ),

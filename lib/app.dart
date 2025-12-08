@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +11,7 @@ class AutoCareGarageApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AutoCare Garage',
+      title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       // GLOBAL NAVIGATOR KEY 
       navigatorKey: AppRoutes.navigatorKey,
@@ -26,7 +27,7 @@ class AutoCareGarageApp extends StatelessWidget {
           builder: (_) => const Scaffold(
             body: Center(
               child: Text(
-                "Page not found",
+                AppStrings.errorSomethingWrong,
                 style: TextStyle(fontSize: 18),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'service_description_view.dart';
 
@@ -8,7 +9,7 @@ class CarWashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const ServiceDescriptionView(
       icon: Icons.local_car_wash,
-      title: "Car Wash",
+      title: AppStrings.carWash,
       description:
           "Premium interior and exterior wash using high-quality, "
           "scratch-free cleaning materials.",

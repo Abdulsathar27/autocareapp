@@ -1,4 +1,5 @@
 import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class BookingStatusChip extends StatelessWidget {
@@ -10,7 +11,7 @@ class BookingStatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Chip(
       label: const Text(
-        "CONFIRMED",
+        AppStrings.confirmed,
         style: TextStyle(color: AppColors.background, fontWeight: FontWeight.w600),
       ),
       backgroundColor: AppColors.primaryGreen,

@@ -1,4 +1,5 @@
 import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/contollers/home_nav_provider.dart';
 import 'package:autocare/views/booking/booking_view.dart';
 import 'package:autocare/views/home/widgets/home_dashboard.dart';
@@ -33,10 +34,10 @@ class HomeView extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         onTap: (i) => context.read<HomeNavProvider>().setIndex(i),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.event_note), label: "Bookings"),
-          BottomNavigationBarItem(icon: Icon(Icons.car_repair), label: "Vehicles"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: AppStrings.home),
+          BottomNavigationBarItem(icon: Icon(Icons.event_note), label: AppStrings.booking),
+          BottomNavigationBarItem(icon: Icon(Icons.car_repair), label: AppStrings.vehicles),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: AppStrings.profile),
         ],
       ),
     );

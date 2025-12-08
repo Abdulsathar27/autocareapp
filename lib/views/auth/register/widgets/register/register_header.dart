@@ -1,5 +1,6 @@
 import 'package:autocare/constants/app_assets.dart';
 import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,7 +26,7 @@ class RegisterHeader extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          "Create Account",
+          AppStrings.registerTitle,
           style: GoogleFonts.poppins(
             fontSize: 28,
             fontWeight: FontWeight.w700,
@@ -34,7 +35,7 @@ class RegisterHeader extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          "Start your vehicle care experience",
+          AppStrings.registerSubtitle,
           style: GoogleFonts.poppins(
             fontSize: 14,
             color: AppColors.textSecondary,

@@ -1,4 +1,5 @@
 import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,7 +12,7 @@ class LoginFooter extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Already have an account?",
+          AppStrings.alreadyHaveAccount,
           style: GoogleFonts.poppins(
             fontSize: 14,
             color: AppColors.textSecondary,
@@ -20,7 +21,7 @@ class LoginFooter extends StatelessWidget {
         TextButton(
           onPressed: () => Navigator.pushNamed(context, "/login"),
           child: Text(
-            "Login",
+            AppStrings.login,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
               color: AppColors.primaryGreen,

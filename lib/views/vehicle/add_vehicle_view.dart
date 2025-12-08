@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/contollers/add_vehicle_form_provider.dart';
 import 'package:autocare/contollers/user_auth_provider.dart';
 import 'package:autocare/contollers/vehicle_provider.dart';
@@ -13,18 +14,16 @@ import 'widgets/vehicle/add/add_vehicle_submit_button.dart';
 
 class AddVehicleView extends StatelessWidget {
   const AddVehicleView({super.key});
-
   @override
   Widget build(BuildContext context) {
     final form = context.watch<AddVehicleFormProvider>();
     final auth = context.read<UserAuthProvider>();
     final vehicleProvider = context.read<VehicleProvider>();
     final controller = VehicleController();
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text("Add Vehicle"),
+        title: const Text(AppStrings.addVehicle),
         centerTitle: true,
         elevation: 0,
         backgroundColor: AppColors.background,
@@ -38,26 +37,20 @@ class AddVehicleView extends StatelessWidget {
               image: form.selectedImage,
               onPick: form.pickImage,
             ),
-
             const SizedBox(height: 30),
-
             // TEXT FIELDS
             AddVehicleFormFields(
               nameCtrl: form.nameCtrl,
               modelCtrl: form.modelCtrl,
               numberCtrl: form.numberCtrl,
             ),
-
             const SizedBox(height: 20),
-
             // DROPDOWN
             AddVehicleTypeDropdown(
               selectedType: form.selectedType,
               onChanged: form.setType,
             ),
-
             const SizedBox(height: 30),
-
             // SUBMIT BUTTON
             AddVehicleSubmitButton(
               isLoading: form.isSubmitting,
@@ -65,15 +58,13 @@ class AddVehicleView extends StatelessWidget {
                 if (!form.isValid()) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text("Please fill all fields"),
+                      content: Text(AppStrings.errorFillAllFields),
                       backgroundColor: Colors.red,
                     ),
                   );
                   return;
                 }
-
                 form.setSubmitting(true);
-
                 await controller.addVehicle(
                   context: context,
                   userId: auth.currentUserId!,
@@ -81,13 +72,11 @@ class AddVehicleView extends StatelessWidget {
                   vehicleModel: form.modelCtrl.text.trim(),
                   vehicleNumber: form.numberCtrl.text.trim(),
                   vehicleType: form.selectedType!,
-                  imageUrl: null, // upload later
+                  imageUrl: null, 
                   provider: vehicleProvider,
                 );
-
                 form.setSubmitting(false);
                 form.resetForm();
-
                 Navigator.pop(context);
               },
             ),

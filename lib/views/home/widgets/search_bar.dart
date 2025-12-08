@@ -1,5 +1,6 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,7 +27,7 @@ class HomeSearchBar extends StatelessWidget {
           const Icon(Icons.search, color: AppColors.textSecondary),
           const SizedBox(width: 12),
           Text(
-            "Search services…",
+            AppStrings.searchServices,
             style: GoogleFonts.poppins(
               color: AppColors.textSecondary,
               fontSize: 14,

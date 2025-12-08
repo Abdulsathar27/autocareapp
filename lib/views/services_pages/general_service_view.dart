@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'service_description_view.dart';
 
@@ -8,7 +9,7 @@ class GeneralServiceView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const ServiceDescriptionView(
       icon: Icons.car_repair,
-      title: "General Service",
+      title: AppStrings.generalService,
       description:
           "General servicing keeps your vehicle smooth, efficient, and safe. "
           "Technicians inspect and replace essential components.",

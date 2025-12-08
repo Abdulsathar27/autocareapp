@@ -27,7 +27,6 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => HomeNavProvider()),
         ChangeNotifierProvider(create: (_) => EditProfileProvider()),
         ChangeNotifierProvider(create: (_) => AddVehicleFormProvider()),
-
       ],
       child: const AutoCareGarageApp(),
     ),
@@ -55,7 +54,6 @@ Future<void> main() async {
         attempt++;
         await Future.delayed(retryDelay);
       }
-
       if (ctx == null) {
         return;
       }

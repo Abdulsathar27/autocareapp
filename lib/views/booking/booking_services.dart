@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/views/booking/widgets/booking/services/booking_services_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +15,7 @@ class BookingServicesView extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "Choose Service",
+          AppStrings.chooseService,
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.w600,

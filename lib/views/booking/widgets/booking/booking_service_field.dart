@@ -1,5 +1,6 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/contollers/booking_provider.dart';
 import 'package:autocare/core/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,8 @@ class BookingServiceField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
-      label: "Select Service",
-      hint: "Choose your service",
+      label: AppStrings.selectService,
+      hint: AppStrings.chooseYourService,
       controller: controller,
       readOnly: true,
       suffixIcon: const Icon(

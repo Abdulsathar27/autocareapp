@@ -1,5 +1,6 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/contollers/edit_profile_provider.dart';
 import 'package:autocare/contollers/user_provider.dart';
 import 'package:autocare/views/profile/widgets/profile/edit_profile_form.dart';
@@ -25,7 +26,7 @@ class EditProfileView extends StatelessWidget {
         backgroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
-        title: const Text("Edit Profile"),
+        title: const Text(AppStrings.editProfile),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.paddingMD),
@@ -53,7 +54,7 @@ class EditProfileView extends StatelessWidget {
                 final success = await edit.saveProfile(userId: userProvider.userId!);
                 if (success) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Profile Updated")),
+                    const SnackBar(content: Text(AppStrings.profileUpdated)),
                   );
                   Navigator.pop(context);
                 }

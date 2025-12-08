@@ -1,4 +1,5 @@
 import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/contollers/booking_provider.dart';
 import 'package:autocare/core/utils/helpers.dart';
 import 'package:autocare/core/widgets/custom_button.dart';
@@ -24,7 +25,7 @@ class BookingContinueButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomButton(
-      text: "Continue",
+      text: AppStrings.continueTexts,
       isLoading: isLoading,
       onPressed: () {
         // VALIDATION -----------------------------------------------------
@@ -34,7 +35,7 @@ class BookingContinueButton extends StatelessWidget {
             timeCtrl.text.isEmpty) {
           Helpers.showSnackBar(
             context,
-            "Please fill all fields",
+            AppStrings.errorFillAllFields,
             backgroundColor: AppColors.redButton,
           );
           return;
@@ -59,7 +60,7 @@ class BookingContinueButton extends StatelessWidget {
         } catch (e) {
           Helpers.showSnackBar(
             context,
-            "Invalid date format",
+            AppStrings.errorInvalidDateFormat,
             backgroundColor: AppColors.redButton,
           );
           return;

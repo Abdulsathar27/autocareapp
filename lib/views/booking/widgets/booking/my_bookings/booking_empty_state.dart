@@ -1,5 +1,5 @@
-// lib/widgets/my_bookings/booking_empty_state.dart
 import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,7 +17,7 @@ class BookingEmptyState extends StatelessWidget {
           const Icon(Icons.event_busy, size: 60, color: AppColors.primaryGreen),
           const SizedBox(height: 10),
           Text(
-            "No Bookings Yet",
+            AppStrings.noBookingsYet,
             style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -25,7 +25,7 @@ class BookingEmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            "Your upcoming bookings will appear here.",
+            AppStrings.upcoming,
             style: GoogleFonts.poppins(color: AppColors.textSecondary),
           ),
         ],

@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/views/vehicle/widgets/vehicle/details/vehicle_details_delete_button.dart';
 import 'package:autocare/views/vehicle/widgets/vehicle/details/vehicle_details_edit_button.dart';
 import 'package:autocare/views/vehicle/widgets/vehicle/details/vehicle_details_image.dart';
@@ -23,7 +24,7 @@ class VehicleDetailsView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text("Vehicle Details", style: GoogleFonts.poppins(fontSize: 20)),
+        title: Text(AppStrings.vehicleDetails, style: GoogleFonts.poppins(fontSize: 20)),
         backgroundColor: AppColors.background,
         centerTitle: true,
         elevation: 0,

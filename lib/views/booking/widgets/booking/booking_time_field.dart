@@ -1,4 +1,5 @@
 import 'package:autocare/constants/app_colors.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/contollers/booking_provider.dart';
 import 'package:autocare/core/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,8 @@ class BookingTimeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
-      label: "Select Time",
-      hint: "Pick a time",
+      label: AppStrings.selectTime,
+      hint: AppStrings.pickATime,
       controller: controller,
       readOnly: true,
       suffixIcon: const Icon(Icons.access_time_filled,

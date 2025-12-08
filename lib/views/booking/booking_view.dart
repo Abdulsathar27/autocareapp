@@ -1,3 +1,4 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/views/booking/widgets/booking/booking_continue_button.dart';
 import 'package:autocare/views/booking/widgets/booking/booking_date_field.dart';
 import 'package:autocare/views/booking/widgets/booking/booking_service_field.dart';
@@ -38,7 +39,8 @@ class _BookingViewState extends State<BookingView> {
         backgroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
-        title: Text("Book Service",
+        title: Text(
+          AppStrings.bookService,
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.w600,

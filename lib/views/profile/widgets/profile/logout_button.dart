@@ -1,5 +1,6 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,7 +19,7 @@ class LogoutButton extends StatelessWidget {
           side: const BorderSide(color: AppColors.redButton, width: 1.4),
         ),
         child: Text(
-          "Logout",
+          AppStrings.logout,
           style: GoogleFonts.poppins(
             fontSize: AppSizes.fontLG,
             fontWeight: FontWeight.w600,
