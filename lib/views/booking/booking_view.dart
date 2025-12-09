@@ -7,32 +7,35 @@ import 'package:autocare/views/booking/widgets/booking/booking_vehicle_field.dar
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
-import '../../contollers/booking_provider.dart';
 
-class BookingView extends StatefulWidget {
+import '../../contollers/booking_provider.dart';
+import '../../contollers/booking_form_provider.dart';
+
+class BookingView extends StatelessWidget {
   const BookingView({super.key});
-  @override
-  State<BookingView> createState() => _BookingViewState();
-}
-class _BookingViewState extends State<BookingView> {
-  final vehicleCtrl = TextEditingController();
-  final serviceCtrl = TextEditingController();
-  final dateCtrl = TextEditingController();
-  final timeCtrl = TextEditingController();
-  bool isLoading = false;
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final booking = context.watch<BookingProvider>();
-   vehicleCtrl.text = booking.selectedVehicleName ?? "";
-  serviceCtrl.text = booking.selectedServiceName ?? "";
-  dateCtrl.text = booking.selectedDateFormatted;
-  timeCtrl.text = booking.selectedTime ?? "";
+
+  void _syncFormWithProvider(BuildContext context) {
+    final booking = context.read<BookingProvider>();
+    final form = context.read<BookingFormProvider>();
+
+    form.vehicleCtrl.text = booking.selectedVehicleName ?? "";
+    form.serviceCtrl.text = booking.selectedServiceName ?? "";
+    form.dateCtrl.text = booking.selectedDateFormatted;
+    form.timeCtrl.text = booking.selectedTime ?? "";
   }
+
   @override
   Widget build(BuildContext context) {
+    // Sync form data with booking provider whenever the view builds
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _syncFormWithProvider(context);
+    });
+
+    final form = context.watch<BookingFormProvider>();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -41,10 +44,11 @@ class _BookingViewState extends State<BookingView> {
         centerTitle: true,
         title: Text(
           AppStrings.bookService,
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            )),
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.paddingMD),
@@ -52,20 +56,25 @@ class _BookingViewState extends State<BookingView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: AppSizes.paddingLG),
-            BookingVehicleField(controller: vehicleCtrl),
+
+            BookingVehicleField(controller: form.vehicleCtrl),
             const SizedBox(height: AppSizes.paddingMD),
-            BookingServiceField(controller: serviceCtrl),
+
+            BookingServiceField(controller: form.serviceCtrl),
             const SizedBox(height: AppSizes.paddingMD),
-            BookingDateField(controller: dateCtrl),
+
+            BookingDateField(controller: form.dateCtrl),
             const SizedBox(height: AppSizes.paddingMD),
-            BookingTimeField(controller: timeCtrl),
+
+            BookingTimeField(controller: form.timeCtrl),
             const SizedBox(height: AppSizes.paddingXL),
+
             BookingContinueButton(
-              isLoading: isLoading,
-              vehicleCtrl: vehicleCtrl,
-              serviceCtrl: serviceCtrl,
-              dateCtrl: dateCtrl,
-              timeCtrl: timeCtrl,
+              isLoading: form.isLoading,
+              vehicleCtrl: form.vehicleCtrl,
+              serviceCtrl: form.serviceCtrl,
+              dateCtrl: form.dateCtrl,
+              timeCtrl: form.timeCtrl,
             ),
           ],
         ),

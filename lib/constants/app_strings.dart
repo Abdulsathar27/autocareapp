@@ -88,6 +88,12 @@ class AppStrings {
   static const String errorFillAllFields = "Please fill all fields correctly.";
   static const String errorCompleteBookingFields = "Please complete all booking fields.";
   static const String errorInvalidDateFormat = "Invalid date format";
+  static const String errorLoginFailed = "Login failed";
+  static const String errorGoogleSignInFailed = "Google sign-in failed";
+  static const String errorPasswordTooShort = "Password must be at least 6 characters.";
+  static const String errorRegistrationFailed = "Registration failed";
+  // Success Messages
+  static const String registrationSuccessful = "Account created successfully! Please login.";
 
 
 }

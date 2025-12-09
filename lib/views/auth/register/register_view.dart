@@ -1,9 +1,10 @@
+import 'package:autocare/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../services/auth_controller.dart';
-import '../../../contollers/user_auth_provider.dart';
 import '../../../core/utils/helpers.dart';
 import '../../../constants/app_colors.dart';
+import '../../../contollers/user_auth_provider.dart';
+import '../../../contollers/register_form_provider.dart';
 import 'widgets/register/register_header.dart';
 import 'widgets/register/name_field.dart';
 import 'widgets/register/email_field.dart';
@@ -12,84 +13,65 @@ import 'widgets/register/password_field.dart';
 import 'widgets/register/register_button.dart';
 import 'widgets/register/login_footer.dart';
 
-class RegisterView extends StatefulWidget {
+class RegisterView extends StatelessWidget {
   const RegisterView({super.key});
 
-  @override
-  State<RegisterView> createState() => _RegisterViewState();
-}
+  Future<void> handleRegister(BuildContext context) async {
+    final form = context.read<RegisterFormProvider>();
+    final authProvider = context.read<UserAuthProvider>();
 
-class _RegisterViewState extends State<RegisterView> {
-  final nameCtrl = TextEditingController();
-  final emailCtrl = TextEditingController();
-  final phoneCtrl = TextEditingController();
-  final passCtrl = TextEditingController();
+    final name = form.nameCtrl.text.trim();
+    final email = form.emailCtrl.text.trim();
+    final phone = form.phoneCtrl.text.trim();
+    final password = form.passCtrl.text.trim();
 
-  final AuthController _authController = AuthController();
-
-  @override
-  void dispose() {
-    nameCtrl.dispose();
-    emailCtrl.dispose();
-    phoneCtrl.dispose();
-    passCtrl.dispose();
-    super.dispose();
-  }
-
-  Future<void> handleRegister() async {
-    final name = nameCtrl.text.trim();
-    final email = emailCtrl.text.trim();
-    final phone = phoneCtrl.text.trim();
-    final password = passCtrl.text.trim();
-
+    // ----------- VALIDATION -----------
     if (name.isEmpty || email.isEmpty || phone.isEmpty || password.isEmpty) {
       Helpers.showSnackBar(
         context,
-        "Please fill in all fields",
+        AppStrings.errorFillAllFields,
         backgroundColor: AppColors.redButton,
       );
       return;
     }
-
     if (password.length < 6) {
       Helpers.showSnackBar(
         context,
-        "Password must be at least 6 characters",
+        AppStrings.errorPasswordTooShort,
         backgroundColor: AppColors.redButton,
       );
       return;
     }
 
-    final authProvider = context.read<UserAuthProvider>();
-
-    final result = await _authController.registerWithEmail(
+    // ----------- CALL PROVIDER -----------
+    final result = await authProvider.registerUser(
       name: name,
       email: email,
       phone: phone,
       password: password,
-      authProvider: authProvider,
     );
 
     if (!result.success) {
       Helpers.showSnackBar(
         context,
-        result.error ?? "Registration failed",
+        result.error ?? AppStrings.errorRegistrationFailed,
         backgroundColor: AppColors.redButton,
       );
       return;
     }
 
-    // SUCCESS
-    Navigator.pushNamedAndRemoveUntil(context, "/login", (_) => false);
     Helpers.showSnackBar(
       context,
-      "Account created successfully! Please login.",
+      AppStrings.registrationSuccessful,
       backgroundColor: AppColors.primaryGreen,
     );
+
+    Navigator.pushNamedAndRemoveUntil(context, "/login", (_) => false);
   }
 
   @override
   Widget build(BuildContext context) {
+    final form = context.watch<RegisterFormProvider>();
     final authProvider = context.watch<UserAuthProvider>();
 
     return Scaffold(
@@ -101,19 +83,24 @@ class _RegisterViewState extends State<RegisterView> {
             children: [
               const RegisterHeader(),
               const SizedBox(height: 20),
-              NameField(controller: nameCtrl),
+
+              NameField(controller: form.nameCtrl),
               const SizedBox(height: 18),
-              RegisterEmailField(controller: emailCtrl),
+
+              RegisterEmailField(controller: form.emailCtrl),
               const SizedBox(height: 18),
-              PhoneField(controller: phoneCtrl),
+
+              PhoneField(controller: form.phoneCtrl),
               const SizedBox(height: 18),
-              RegisterPasswordField(controller: passCtrl),
+
+              RegisterPasswordField(controller: form.passCtrl),
               const SizedBox(height: 25),
 
-              // NOW USING PROVIDER LOADING
               RegisterButton(
                 isLoading: authProvider.isEmailLoading,
-                onPressed: authProvider.isEmailLoading ? () {} : handleRegister,
+                onPressed: authProvider.isEmailLoading
+                    ? null
+                    : () => handleRegister(context),
               ),
 
               const SizedBox(height: 20),

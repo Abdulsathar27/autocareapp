@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:autocare/contollers/add_vehicle_form_provider.dart';
+import 'package:autocare/contollers/booking_form_provider.dart';
 import 'package:autocare/contollers/edit_profile_provider.dart';
 import 'package:autocare/contollers/home_nav_provider.dart';
+import 'package:autocare/contollers/login_form_provider.dart';
+import 'package:autocare/contollers/register_form_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,40 +30,49 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => HomeNavProvider()),
         ChangeNotifierProvider(create: (_) => EditProfileProvider()),
         ChangeNotifierProvider(create: (_) => AddVehicleFormProvider()),
+        ChangeNotifierProvider(create: (_) => RegisterFormProvider()),
+        ChangeNotifierProvider(create: (_) => LoginFormProvider()),
+        ChangeNotifierProvider(create: (_) => BookingFormProvider()),
       ],
       child: const AutoCareGarageApp(),
     ),
   );
   
   FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
-    try {
-      if (firebaseUser == null) {
-        final ctx = AppRoutes.navigatorKey.currentContext;
-        if (ctx != null) {
-          try {
-            Provider.of<UserProvider>(ctx, listen: false).clearUser();
-          } catch (_) {}
-        }
-        return;
+  try {
+    if (firebaseUser == null) {
+      final ctx = AppRoutes.navigatorKey.currentContext;
+      if (ctx != null) {
+        try {
+          Provider.of<UserProvider>(ctx, listen: false).clearUser();
+        } catch (_) {}
       }
-      const int maxRetries = 10;
-      const Duration retryDelay = Duration(milliseconds: 200);
-      int attempt = 0;
-      BuildContext? ctx;
-
-      while (attempt < maxRetries) {
-        ctx = AppRoutes.navigatorKey.currentContext;
-        if (ctx != null) break;
-        attempt++;
-        await Future.delayed(retryDelay);
-      }
-      if (ctx == null) {
-        return;
-      }
-      final userProvider = Provider.of<UserProvider>(ctx, listen: false);
-      await AuthController().loadUser(firebaseUser.uid, userProvider);
-    } catch (e, st) {
-      // print('authStateChanges listener error: $e\n$st');
+      return;
     }
-  });
+    const int maxRetries = 10;
+    const Duration retryDelay = Duration(milliseconds: 200);
+
+    int attempt = 0;
+    BuildContext? ctx;
+
+    while (attempt < maxRetries) {
+      ctx = AppRoutes.navigatorKey.currentContext;
+      if (ctx != null) break;
+      attempt++;
+      await Future.delayed(retryDelay);
+    }
+
+    if (ctx == null) return;
+
+    final userProvider = Provider.of<UserProvider>(ctx, listen: false);
+    // FIXED: load user using updated AuthController
+    final userModel = await AuthController().loadUser(firebaseUser.uid);
+    if (userModel != null) {
+      userProvider.setUser(userModel);
+    }
+  } catch (e, st) {
+    // handle error quietly or log
+  }
+});
+
 }

@@ -5,12 +5,12 @@ import '../../../../../constants/app_colors.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   final bool isLoading;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const GoogleSignInButton({
     super.key,
     required this.isLoading,
-    required this.onPressed,
+    this.onPressed,
   });
 
   @override

@@ -4,12 +4,12 @@ import '../../../../../core/widgets/custom_button.dart';
 
 class LoginButton extends StatelessWidget {
   final bool isLoading;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const LoginButton({
     super.key,
     required this.isLoading,
-    required this.onPressed,
+    this.onPressed,
   });
 
   @override

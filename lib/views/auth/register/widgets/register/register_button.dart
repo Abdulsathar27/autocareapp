@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 
 class RegisterButton extends StatelessWidget {
   final bool isLoading;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const RegisterButton({
     super.key,
     required this.isLoading,
-    required this.onPressed,
+    this.onPressed,
   });
 
   @override
