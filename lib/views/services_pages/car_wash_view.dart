@@ -22,5 +22,6 @@ class CarWashView extends StatelessWidget {
         "Glass & mirror cleaning",
       ],
     );
+    
   }
 }

@@ -29,7 +29,6 @@ class BookingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sync form data with booking provider whenever the view builds
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _syncFormWithProvider(context);
     });

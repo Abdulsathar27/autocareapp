@@ -19,9 +19,7 @@ class AuthController {
   final AuthRepository authRepo = AuthRepository();
   final UserRepository userRepo = UserRepository();
 
-  // -----------------------------------------------------------
   // EMAIL LOGIN
-  // -----------------------------------------------------------
   Future<AuthResult> loginWithEmail({
     required String email,
     required String password,
@@ -52,9 +50,7 @@ class AuthController {
     }
   }
 
-  // -----------------------------------------------------------
   // GOOGLE LOGIN
-  // -----------------------------------------------------------
   Future<AuthResult> loginWithGoogle() async {
     try {
       final firebaseUser = await authRepo.loginWithGoogle();
@@ -96,9 +92,7 @@ class AuthController {
     }
   }
 
-  // -----------------------------------------------------------
   // REGISTER WITH EMAIL
-  // -----------------------------------------------------------
   Future<AuthResult> registerWithEmail({
     required String name,
     required String email,
@@ -141,13 +135,11 @@ class AuthController {
     }
   }
 
-  // ---------------------------
-// LOAD USER BY UID (PURE)
-// ---------------------------
-Future<UserModel?> loadUser(String uid) async {
+  // LOAD USER BY UID (PURE)
+  Future<UserModel?> loadUser(String uid) async {
   try {
     final user = await userRepo.getUser(uid);
-    return user; // may be null if not found
+    return user; 
   } catch (e) {
     return null;
   }

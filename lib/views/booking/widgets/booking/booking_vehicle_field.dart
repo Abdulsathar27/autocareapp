@@ -26,8 +26,6 @@ class BookingVehicleField extends StatelessWidget {
       ),
       onTap: () async {
         await Navigator.pushNamed(context, "/vehicle-list");
-
-        // Update text when returning
         final booking = context.read<BookingProvider>();
         controller.text = booking.selectedVehicleName ?? "";
       },

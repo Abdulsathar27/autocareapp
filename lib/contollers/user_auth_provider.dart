@@ -20,9 +20,7 @@ class UserAuthProvider extends ChangeNotifier {
   User? get firebaseUser => FirebaseAuth.instance.currentUser;
   String? get currentUserId => firebaseUser?.uid;
 
-  // ------------------------
   // REGISTER
-  // ------------------------
   Future<AuthResult> registerUser({
     required String name,
     required String email,
@@ -54,9 +52,7 @@ class UserAuthProvider extends ChangeNotifier {
     }
   }
 
-  // ------------------------
   // EMAIL LOGIN
-  // ------------------------
   Future<AuthResult> loginUser({
     required String email,
     required String password,
@@ -84,9 +80,7 @@ class UserAuthProvider extends ChangeNotifier {
     }
   }
 
-  // ------------------------
   // GOOGLE LOGIN
-  // ------------------------
   Future<AuthResult> loginWithGoogle() async {
     _isGoogleLoading = true;
     notifyListeners();
@@ -108,9 +102,7 @@ class UserAuthProvider extends ChangeNotifier {
     }
   }
 
-  // ------------------------
   // SIGN OUT
-  // ------------------------
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     _user = null;

@@ -33,10 +33,7 @@ class BookingDateField extends StatelessWidget {
         );
 
         if (picked != null) {
-          // UI String
           controller.text = "${picked.day}/${picked.month}/${picked.year}";
-
-          // Provider VALUE (DateTime)
           context.read<BookingProvider>().selectDate(picked);
         }
       },

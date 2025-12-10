@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
 
 class Helpers {
-  // SHOW SNACKBAR 
   static void showSnackBar(
     BuildContext context,
     String message, {

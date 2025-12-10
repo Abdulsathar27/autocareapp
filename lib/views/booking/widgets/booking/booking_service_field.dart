@@ -26,8 +26,6 @@ class BookingServiceField extends StatelessWidget {
       ),
       onTap: () async {
         await Navigator.pushNamed(context, "/booking-services");
-
-        // update UI after selecting service
         final booking = context.read<BookingProvider>();
         controller.text = booking.selectedServiceName ?? "";
       },

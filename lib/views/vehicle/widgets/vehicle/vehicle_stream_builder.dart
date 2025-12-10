@@ -10,16 +10,15 @@ import 'package:provider/provider.dart';
 
 class VehicleStreamBuilder extends StatelessWidget {
   final String userId;
+  final VehicleController controller = VehicleController(); // FIXED
 
-  const VehicleStreamBuilder({
+  VehicleStreamBuilder({
     super.key,
     required this.userId,
   });
 
   @override
   Widget build(BuildContext context) {
-    final controller = VehicleController();
-
     return StreamBuilder<List<VehicleModel>>(
       stream: controller.getUserVehicles(userId),
 
@@ -27,31 +26,36 @@ class VehicleStreamBuilder extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
+
         if (snapshot.hasError) {
-          return Center(
+          return const Center(
             child: Text(
               "Something went wrong.\nPlease try again later.",
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16),
             ),
           );
         }
+
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
 
         final vehicles = snapshot.data!;
+
+        /// 🚀 FIX FOR notifyListeners during build
         WidgetsBinding.instance.addPostFrameCallback((_) {
           context.read<VehicleProvider>().setVehiclesFromStream(vehicles);
         });
-         if (vehicles.isEmpty) {
+
+        if (vehicles.isEmpty) {
           return const VehicleEmptyView();
         }
-        
+
         return ListView.separated(
           padding: const EdgeInsets.all(AppSizes.paddingMD),
           itemCount: vehicles.length,
-          separatorBuilder: (_, _) => const SizedBox(height: 12),
+          separatorBuilder: (_, __) => const SizedBox(height: 12),
           itemBuilder: (_, index) {
             final vehicle = vehicles[index];
 
@@ -71,3 +75,4 @@ class VehicleStreamBuilder extends StatelessWidget {
     );
   }
 }
+
