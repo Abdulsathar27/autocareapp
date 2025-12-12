@@ -16,27 +16,29 @@ class BookingSummaryConfirmButton extends StatelessWidget {
     final isLoading = booking.isLoading;
 
     return Consumer<BookingProvider>(
-      builder:(context, value, child) =>  CustomButton(
+      builder: (context, value, child) => CustomButton(
         text: AppStrings.confirmBooking,
         isLoading: isLoading,
         onPressed: isLoading
             ? null
-            : ()=> booking.createBooking(
-             context.read<UserAuthProvider>().currentUserId!,
-            ).then((result) {
-              if (result) {
-                Navigator.pushNamed(context, AppRoutes.bookingSuccess);
-              } else {
-                Helpers.showSnackBar(
-                  context,
-                  "Booking failed",
-                  backgroundColor: Colors.red,
-                );
-              }
-            }),
+            : () => booking
+                  .createBooking(
+                    context.read<UserAuthProvider>().currentUserId!,
+                  )
+                  .then((result) {
+                    if (result) {
+                      if (!context.mounted) return;
+                      Navigator.pushNamed(context, AppRoutes.bookingSuccess);
+                    } else {
+                      if (!context.mounted) return;
+                      Helpers.showSnackBar(
+                        context,
+                        "Booking failed",
+                        backgroundColor: Colors.red,
+                      );
+                    }
+                  }),
       ),
     );
   }
-
-  
 }

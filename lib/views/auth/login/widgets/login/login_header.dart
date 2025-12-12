@@ -12,7 +12,7 @@ class LoginHeader extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 200,
+          height: 120,
           child: Image.network(
             AppAssets.loginScreen,
             fit: BoxFit.contain,

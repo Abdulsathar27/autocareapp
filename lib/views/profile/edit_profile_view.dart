@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
 import 'package:autocare/constants/app_strings.dart';
@@ -29,8 +27,6 @@ class EditProfileView extends StatelessWidget {
         centerTitle: true,
         title: const Text(AppStrings.editProfile),
       ),
-
-      // 👇 Only rebuilds UI when EditProfileProvider changes
       body: Consumer<EditProfileProvider>(
         builder: (context, edit, _) {
           return SingleChildScrollView(
@@ -66,14 +62,15 @@ class EditProfileView extends StatelessWidget {
                     );
 
                     if (success) {
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(AppStrings.profileUpdated),
                         ),
                       );
-
                       Navigator.pop(context);
                     } else {
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Failed to update profile."),

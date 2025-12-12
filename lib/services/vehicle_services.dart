@@ -104,7 +104,7 @@ class VehicleController {
       await _firestore.collection(FirebaseKeys.vehicles).doc(vehicleId).delete();
       // Update provider safely
       provider?.deleteVehicle(vehicleId);
-      if (context?.mounted ?? false) {
+      if (context?.mounted ?? false) {  
         Helpers.showSnackBar(
           context!,
           "Vehicle deleted!",

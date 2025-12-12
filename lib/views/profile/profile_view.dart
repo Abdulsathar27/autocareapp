@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:autocare/constants/app_strings.dart';
 import 'package:autocare/controller/user_provider.dart';
 import 'package:autocare/views/profile/widgets/profile/logout_button.dart';
@@ -27,6 +25,7 @@ class _ProfileViewState extends State<ProfileView> {
           context.read<UserProvider>().userId!,
         );
   }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -36,8 +35,6 @@ class _ProfileViewState extends State<ProfileView> {
         centerTitle: true,
         title: const Text(AppStrings.profile),
       ),
-
-      
       body: Consumer<UserProvider>(
         builder: (context, userProvider, _) {
           final user = userProvider.user;
@@ -57,28 +54,22 @@ class _ProfileViewState extends State<ProfileView> {
                   email: user?.email ?? "No Email",
                   phone: user?.phone ?? "No Phone",
                 ),
-
                 const SizedBox(height: AppSizes.paddingMD),
-
                 ProfileOptionList(
                   onEdit: () => Navigator.pushNamed(context, "/edit-profile"),
                   onVehicles: () => Navigator.pushNamed(context, "/vehicle-list"),
                   onBookings: () => Navigator.pushNamed(context, "/my-bookings"),
                   onSettings: () {},
                 ),
-
                 const SizedBox(height: AppSizes.paddingMD),
-
                 LogoutButton(
                   onLogout: () {
-                    userProvider.clearUser();
-
+                    userProvider.clearUser(); 
                     Navigator.pushNamedAndRemoveUntil(
                       context,
                       "/login",
                       (_) => false,
                     );
-
                     Helpers.showSnackBar(
                       context,
                       AppStrings.logout,

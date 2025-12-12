@@ -6,7 +6,6 @@ import 'package:autocare/core/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class BookingVehicleField extends StatelessWidget {
   final TextEditingController controller;
 
@@ -26,6 +25,7 @@ class BookingVehicleField extends StatelessWidget {
       ),
       onTap: () async {
         await Navigator.pushNamed(context, "/vehicle-list");
+        if (!context.mounted) return;
         final booking = context.read<BookingProvider>();
         controller.text = booking.selectedVehicleName ?? "";
       },

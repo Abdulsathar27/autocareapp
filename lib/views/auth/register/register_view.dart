@@ -18,7 +18,6 @@ class RegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final form = context.read<RegisterFormProvider>();
-  
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -28,48 +27,47 @@ class RegisterView extends StatelessWidget {
             children: [
               const RegisterHeader(),
               const SizedBox(height: 20),
-
               NameField(controller: form.nameCtrl),
               const SizedBox(height: 18),
-
               RegisterEmailField(controller: form.emailCtrl),
               const SizedBox(height: 18),
-
               PhoneField(controller: form.phoneCtrl),
               const SizedBox(height: 18),
-
               RegisterPasswordField(controller: form.passCtrl),
               const SizedBox(height: 25),
-
-              Consumer2<UserAuthProvider,RegisterFormProvider>(
-                builder: (context, authProvider,value, child) => RegisterButton(
-                  isLoading: authProvider.isEmailLoading,
-                  onPressed: authProvider.isEmailLoading
-                      ? null
-                      : () => authProvider.registerUser(
-                            name: form.nameCtrl.text.trim(),
-                            email: form.emailCtrl.text.trim(),
-                            phone: form.phoneCtrl.text.trim(),
-                            password: form.passCtrl.text.trim(),
-                          ).then((result) {
-                            if (result.success) {
-                              value.clear();
-                              Helpers.showSnackBar(
-                                context,
-                                "Registration success",
-                                backgroundColor: Colors.green,
-                              );
-                              Navigator.pop(context);
-                            } else {
-                              Helpers.showSnackBar(
-                                context,
-                                "Registration failed: ${result.error}",
-                                backgroundColor: Colors.red,
-                              );
-                            }
-                          }
-                ),
-              ),
+              Consumer2<UserAuthProvider, RegisterFormProvider>(
+                builder: (context, authProvider, value, child) =>
+                    RegisterButton(
+                      isLoading: authProvider.isEmailLoading,
+                      onPressed: authProvider.isEmailLoading
+                          ? null
+                          : () => authProvider
+                                .registerUser(
+                                  name: form.nameCtrl.text.trim(),
+                                  email: form.emailCtrl.text.trim(),
+                                  phone: form.phoneCtrl.text.trim(),
+                                  password: form.passCtrl.text.trim(),
+                                )
+                                .then((result) {
+                                  if (result.success) {
+                                    value.clear();
+                                    if (!context.mounted) return;
+                                    Helpers.showSnackBar(
+                                      context,
+                                      "Registration success",
+                                      backgroundColor: Colors.green,
+                                    );
+                                    Navigator.pop(context);
+                                  } else {
+                                    if (!context.mounted) return;
+                                    Helpers.showSnackBar(
+                                      context,
+                                      "Registration failed: ${result.error}",
+                                      backgroundColor: Colors.red,
+                                    );
+                                  }
+                                }),
+                    ),
               ),
 
               const SizedBox(height: 20),

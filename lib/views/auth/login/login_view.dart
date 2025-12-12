@@ -17,7 +17,6 @@ import 'widgets/login/register_footer.dart';
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     final form = context.read<LoginFormProvider>();
@@ -34,55 +33,78 @@ class LoginView extends StatelessWidget {
               const SizedBox(height: 18),
               PasswordField(controller: form.passwordCtrl),
               const ForgotPasswordButton(),
+              const SizedBox(height: 25),
               // EMAIL LOGIN BUTTON
-              Consumer3<UserAuthProvider,HomeNavProvider,LoginFormProvider>(
-                builder: (context, authProvider,value2,value3, homeNavProvider) => LoginButton(
-                  isLoading: authProvider.isEmailLoading,
-                  onPressed: authProvider.isEmailLoading
-                      ? null
-                      : () => authProvider.loginUser(email: form.emailCtrl.text.trim(), password: form.passwordCtrl.text.trim()).then((result) {
-                            if (result.success) {
-                              value2.setIndex(0);
-                              value3.clear();
-                              Helpers.showSnackBar(context,
-                                "Login success",
-                                backgroundColor: Colors.green,);
-                                Navigator.pushReplacementNamed(context, AppRoutes.home);
-                            } else {
-                              Helpers.showSnackBar(
-                                context,
-                                "Login failed: ${result.error}",
-                                backgroundColor: Colors.red,
-                              );
-                            }
-                          }
-                ),
+              Consumer3<UserAuthProvider, HomeNavProvider, LoginFormProvider>(
+                builder:
+                    (context, authProvider, value2, value3, homeNavProvider) =>
+                        LoginButton(
+                          isLoading: authProvider.isEmailLoading,
+                          onPressed: authProvider.isEmailLoading
+                              ? null
+                              : () => authProvider
+                                    .loginUser(
+                                      email: form.emailCtrl.text.trim(),
+                                      password: form.passwordCtrl.text.trim(),
+                                    )
+                                    .then((result) {
+                                      if (result.success) {
+                                        value2.setIndex(0);
+                                        value3.clear();
+
+                                        if (!context.mounted) return;
+                                        Helpers.showSnackBar(
+                                          context,
+                                          "Login success",
+                                          backgroundColor: Colors.green,
+                                        );
+                                        Navigator.pushReplacementNamed(
+                                          context,
+                                          AppRoutes.home,
+                                        );
+                                      } else {
+                                        if (!context.mounted) return;
+                                        Helpers.showSnackBar(
+                                          context,
+                                          "Login failed: ${result.error}",
+                                          backgroundColor: Colors.red,
+                                        );
+                                      }
+                                    }),
+                        ),
               ),
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               // GOOGLE LOGIN BUTTON
-              Consumer2<UserAuthProvider,HomeNavProvider>(
-                builder: (context, authProvider,value, child) => GoogleSignInButton(
-                  isLoading: authProvider.isGoogleLoading,
-                  onPressed: authProvider.isGoogleLoading
-                      ? null
-                      : () => authProvider.loginWithGoogle().then((result) {
-                            if (result.success) {
-                              value.setIndex(0);
-                              Helpers.showSnackBar(context,
-                                "Google login success",
-                                backgroundColor: Colors.green,);
-                                Navigator.pushReplacementNamed(context, AppRoutes.home);
-                            } else {
-                              Helpers.showSnackBar(
-                                context,
-                                "Google login failed: ${result.error}",
-                                backgroundColor: Colors.red,
-                              );
-                            }
-                          }
-                ),
-              ),
+              Consumer2<UserAuthProvider, HomeNavProvider>(
+                builder: (context, authProvider, value, child) =>
+                    GoogleSignInButton(
+                      isLoading: authProvider.isGoogleLoading,
+                      onPressed: authProvider.isGoogleLoading
+                          ? null
+                          : () => authProvider.loginWithGoogle().then((result) {
+                              if (result.success) {
+                                value.setIndex(0);
+
+                                if (!context.mounted) return;
+                                Helpers.showSnackBar(
+                                  context,
+                                  "Google login success",
+                                  backgroundColor: Colors.green,
+                                );
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  AppRoutes.home,
+                                );
+                              } else {
+                                if (!context.mounted) return;
+                                Helpers.showSnackBar(
+                                  context,
+                                  "Google login failed: ${result.error}",
+                                  backgroundColor: Colors.red,
+                                );
+                              }
+                            }),
+                    ),
               ),
               const SizedBox(height: 25),
               const RegisterFooter(),

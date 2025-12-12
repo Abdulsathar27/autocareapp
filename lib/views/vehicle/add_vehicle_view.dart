@@ -91,7 +91,7 @@ class AddVehicleView extends StatelessWidget {
 
                     form.setSubmitting(false);
                     form.resetForm();
-
+                    if (!context.mounted) return;
                     Navigator.pop(context);
                   },
                 ),

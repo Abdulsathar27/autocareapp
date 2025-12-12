@@ -17,8 +17,11 @@ class BookingTimeField extends StatelessWidget {
       hint: AppStrings.pickATime,
       controller: controller,
       readOnly: true,
-      suffixIcon: const Icon(Icons.access_time_filled,
-          size: 22, color: AppColors.primaryGreen),
+      suffixIcon: const Icon(
+        Icons.access_time_filled,
+        size: 22,
+        color: AppColors.primaryGreen,
+      ),
       onTap: () async {
         final picked = await showTimePicker(
           context: context,
@@ -26,6 +29,7 @@ class BookingTimeField extends StatelessWidget {
         );
 
         if (picked != null) {
+          if (!context.mounted) return;
           controller.text = picked.format(context);
           context.read<BookingProvider>().selectTime(controller.text);
         }
