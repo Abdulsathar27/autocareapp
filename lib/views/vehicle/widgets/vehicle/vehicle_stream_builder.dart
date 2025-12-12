@@ -1,8 +1,8 @@
 import 'package:autocare/constants/app_sizes.dart';
-import 'package:autocare/contollers/booking_provider.dart';
-import 'package:autocare/contollers/vehicle_provider.dart';
+import 'package:autocare/controller/booking_provider.dart';
+import 'package:autocare/controller/vehicle_provider.dart';
 import 'package:autocare/models/vehicle_model.dart';
-import 'package:autocare/services/vehicle_controller.dart';
+import 'package:autocare/services/vehicle_services.dart';
 import 'package:autocare/views/vehicle/widgets/vehicle/vehicle_card.dart';
 import 'package:autocare/views/vehicle/widgets/vehicle/vehicle_empty_view.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class VehicleStreamBuilder extends StatelessWidget {
   final String userId;
-  final VehicleController controller = VehicleController(); // FIXED
+  final VehicleController controller = VehicleController(); 
 
   VehicleStreamBuilder({
     super.key,
@@ -43,7 +43,7 @@ class VehicleStreamBuilder extends StatelessWidget {
 
         final vehicles = snapshot.data!;
 
-        /// 🚀 FIX FOR notifyListeners during build
+    
         WidgetsBinding.instance.addPostFrameCallback((_) {
           context.read<VehicleProvider>().setVehiclesFromStream(vehicles);
         });
@@ -55,7 +55,7 @@ class VehicleStreamBuilder extends StatelessWidget {
         return ListView.separated(
           padding: const EdgeInsets.all(AppSizes.paddingMD),
           itemCount: vehicles.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          separatorBuilder: (_, _) => const SizedBox(height: 12),
           itemBuilder: (_, index) {
             final vehicle = vehicles[index];
 

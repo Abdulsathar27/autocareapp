@@ -1,4 +1,5 @@
 import 'package:autocare/constants/app_strings.dart';
+import 'package:autocare/controller/booking_provider.dart';
 import 'package:autocare/views/booking/widgets/booking/summary/booking_summary_card.dart';
 import 'package:autocare/views/booking/widgets/booking/summary/booking_summary_confirm_button.dart';
 import 'package:flutter/material.dart';
@@ -6,14 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
-import '../../contollers/booking_provider.dart';
+
 
 
 class BookingSummaryView extends StatelessWidget {
   const BookingSummaryView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final booking = context.watch<BookingProvider>();
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -22,26 +23,39 @@ class BookingSummaryView extends StatelessWidget {
         centerTitle: true,
         title: Text(
           AppStrings.bookingSummary,
-          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSizes.paddingMD),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            BookingSummaryCard(
-              service: booking.selectedServiceName ?? "Not Selected",
-              vehicle: booking.selectedVehicleName ?? "Not Selected",
-              date: booking.selectedDateFormatted,
-              time: booking.selectedTime ?? "Not Selected",
+
+      // 👇 Only this part rebuilds when BookingProvider updates
+      body: Consumer<BookingProvider>(
+        builder: (context, booking, _) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSizes.paddingMD),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+
+                BookingSummaryCard(
+                  service: booking.selectedServiceName ?? "Not Selected",
+                  vehicle: booking.selectedVehicleName ?? "Not Selected",
+                  date: booking.selectedDateFormatted,
+                  time: booking.selectedTime ?? "Not Selected",
+                ),
+
+                const SizedBox(height: 30),
+
+                const BookingSummaryConfirmButton(),
+
+                const SizedBox(height: 20),
+              ],
             ),
-            const SizedBox(height: 30),
-            const BookingSummaryConfirmButton(),
-            const SizedBox(height: 20),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

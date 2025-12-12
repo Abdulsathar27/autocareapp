@@ -1,6 +1,6 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
-import 'package:autocare/contollers/booking_provider.dart';
+import 'package:autocare/controller/booking_provider.dart';
 import 'package:autocare/models/vehicle_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

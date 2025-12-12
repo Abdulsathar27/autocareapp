@@ -57,11 +57,5 @@ class VehicleProvider extends ChangeNotifier {
 
     notifyListeners();
   }
-  // CLEAR ALL VEHICLE DATA
-  void clear() {
-    _selectedVehicle = null;
-    _vehicles.clear();
-    _isLoading = false;
-    notifyListeners();
-  }
+ 
 }

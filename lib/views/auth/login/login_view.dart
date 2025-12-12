@@ -1,10 +1,11 @@
-import 'package:autocare/constants/app_strings.dart';
+import 'package:autocare/controller/home_nav_provider.dart';
+import 'package:autocare/controller/login_form_provider.dart';
+import 'package:autocare/controller/user_auth_provider.dart';
+import 'package:autocare/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_colors.dart';
 import '../../../core/utils/helpers.dart';
-import '../../../contollers/user_auth_provider.dart';
-import '../../../contollers/login_form_provider.dart';
 import 'widgets/login/login_header.dart';
 import 'widgets/login/email_field.dart';
 import 'widgets/login/password_field.dart';
@@ -16,54 +17,10 @@ import 'widgets/login/register_footer.dart';
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
-  // EMAIL LOGIN HANDLER
-  Future<void> handleLogin(BuildContext context) async {
-    final form = context.read<LoginFormProvider>();
-    final authProvider = context.read<UserAuthProvider>();
-    final email = form.emailCtrl.text.trim();
-    final password = form.passwordCtrl.text.trim();
-    if (email.isEmpty || password.isEmpty) {
-      Helpers.showSnackBar(
-        context,
-        AppStrings.errorFillAllFields,
-        backgroundColor: AppColors.redButton,
-      );
-      return;
-    }
 
-    final result = await authProvider.loginUser(
-      email: email,
-      password: password,
-    );
-
-    if (!result.success) {
-      Helpers.showSnackBar(
-        context,
-        result.error ?? AppStrings.errorLoginFailed,
-        backgroundColor: AppColors.redButton,
-      );
-      return;
-    }
-    Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
-  }
-  // GOOGLE LOGIN HANDLER
-  Future<void> handleGoogleLogin(BuildContext context) async {
-    final authProvider = context.read<UserAuthProvider>();
-    final result = await authProvider.loginWithGoogle();
-    if (!result.success) {
-      Helpers.showSnackBar(
-        context,
-        result.error ?? AppStrings.errorGoogleSignInFailed,
-        backgroundColor: AppColors.redButton,
-      );
-      return;
-    }
-    Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
-  }
   @override
   Widget build(BuildContext context) {
-    final form = context.watch<LoginFormProvider>();
-    final authProvider = context.watch<UserAuthProvider>();
+    final form = context.read<LoginFormProvider>();
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -78,19 +35,54 @@ class LoginView extends StatelessWidget {
               PasswordField(controller: form.passwordCtrl),
               const ForgotPasswordButton(),
               // EMAIL LOGIN BUTTON
-              LoginButton(
-                isLoading: authProvider.isEmailLoading,
-                onPressed: authProvider.isEmailLoading
-                    ? null
-                    : () => handleLogin(context),
+              Consumer3<UserAuthProvider,HomeNavProvider,LoginFormProvider>(
+                builder: (context, authProvider,value2,value3, homeNavProvider) => LoginButton(
+                  isLoading: authProvider.isEmailLoading,
+                  onPressed: authProvider.isEmailLoading
+                      ? null
+                      : () => authProvider.loginUser(email: form.emailCtrl.text.trim(), password: form.passwordCtrl.text.trim()).then((result) {
+                            if (result.success) {
+                              value2.setIndex(0);
+                              value3.clear();
+                              Helpers.showSnackBar(context,
+                                "Login success",
+                                backgroundColor: Colors.green,);
+                                Navigator.pushReplacementNamed(context, AppRoutes.home);
+                            } else {
+                              Helpers.showSnackBar(
+                                context,
+                                "Login failed: ${result.error}",
+                                backgroundColor: Colors.red,
+                              );
+                            }
+                          }
+                ),
+              ),
               ),
               const SizedBox(height: 20),
               // GOOGLE LOGIN BUTTON
-              GoogleSignInButton(
-                isLoading: authProvider.isGoogleLoading,
-                onPressed: authProvider.isGoogleLoading
-                    ? null
-                    : () => handleGoogleLogin(context),
+              Consumer2<UserAuthProvider,HomeNavProvider>(
+                builder: (context, authProvider,value, child) => GoogleSignInButton(
+                  isLoading: authProvider.isGoogleLoading,
+                  onPressed: authProvider.isGoogleLoading
+                      ? null
+                      : () => authProvider.loginWithGoogle().then((result) {
+                            if (result.success) {
+                              value.setIndex(0);
+                              Helpers.showSnackBar(context,
+                                "Google login success",
+                                backgroundColor: Colors.green,);
+                                Navigator.pushReplacementNamed(context, AppRoutes.home);
+                            } else {
+                              Helpers.showSnackBar(
+                                context,
+                                "Google login failed: ${result.error}",
+                                backgroundColor: Colors.red,
+                              );
+                            }
+                          }
+                ),
+              ),
               ),
               const SizedBox(height: 25),
               const RegisterFooter(),

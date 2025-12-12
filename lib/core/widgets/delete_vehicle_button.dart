@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../constants/app_sizes.dart';
 import '../../core/utils/helpers.dart';
-import '../../services/vehicle_controller.dart';
+import '../../services/vehicle_services.dart';
 
 class DeleteVehicleButton extends StatefulWidget {
   final String? vehicleId;

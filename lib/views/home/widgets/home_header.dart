@@ -1,7 +1,7 @@
 import 'package:autocare/constants/app_colors.dart';
 import 'package:autocare/constants/app_sizes.dart';
 import 'package:autocare/constants/app_strings.dart';
-import 'package:autocare/contollers/user_provider.dart';
+import 'package:autocare/controller/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +9,7 @@ class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<UserProvider>().user;
+    final user = context.read<UserProvider>().user;
     return Row(
       children: [
         CircleAvatar(

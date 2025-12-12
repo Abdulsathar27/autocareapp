@@ -20,22 +20,23 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
+  // void _setLoading(bool value) {
+  //   _isLoading = value;
+  //   notifyListeners();
+  // }
 
   // LOAD USER FROM FIRESTORE
   Future<void> loadUser(String uid) async {
-    _setLoading(true);
+    // _setLoading(true);
     try {
       final fetchedUser = await _userRepo.getUser(uid);
       if (fetchedUser != null) {
         _user = fetchedUser;
       }
     } finally {
-      _setLoading(false);
+      // _setLoading(false);
     }
+    notifyListeners();
   }
 
   // LOGOUT

@@ -21,4 +21,13 @@ class BookingFormProvider extends ChangeNotifier {
     timeCtrl.dispose();
     super.dispose();
   }
+
+void clear() {
+    vehicleCtrl.clear();
+    serviceCtrl.clear();
+    dateCtrl.clear();
+    timeCtrl.clear();
+    notifyListeners();
+  }
+  
 }

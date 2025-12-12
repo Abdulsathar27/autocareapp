@@ -2,20 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   // GoogleSignIn instance (scopes can be adjusted)
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
 
-  User? get currentUser => _auth.currentUser;
-  Stream<User?> authStateChanges() => _auth.authStateChanges();
+  User? get currentUser => auth.currentUser;
+  Stream<User?> authStateChanges() => auth.authStateChanges();
 
   /// Email login (named params)
   Future<User?> loginWithEmail({
     required String email,
     required String password,
   }) async {
-    final result = await _auth.signInWithEmailAndPassword(
+    final result = await auth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -27,7 +27,7 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
-    final result = await _auth.createUserWithEmailAndPassword(
+    final result = await auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -38,7 +38,7 @@ class AuthRepository {
   Future<User?> loginWithGoogle() async {
     try {
       
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
         
         return null;
@@ -55,7 +55,7 @@ class AuthRepository {
       );
 
       // Sign in with Firebase
-      final userCred = await _auth.signInWithCredential(credential);
+      final userCred = await auth.signInWithCredential(credential);
       return userCred.user;
     } catch (e) {
       
@@ -67,12 +67,12 @@ class AuthRepository {
   Future<void> logout() async {
     try {
       
-      if (await _googleSignIn.isSignedIn()) {
-        await _googleSignIn.disconnect();
+      if (await googleSignIn.isSignedIn()) {
+        await googleSignIn.disconnect();
       }
     } catch (_) {
       
     }
-    await _auth.signOut();
+    await auth.signOut();
   }
 }

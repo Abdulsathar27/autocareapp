@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,29 +37,34 @@ class EditProfileProvider extends ChangeNotifier {
 
   // SAVE PROFILE
   Future<bool> saveProfile({
-    required String userId,
-  }) async {
-    isLoading = true;
+  required UserModel user,
+}) async {
+  isLoading = true;
+  notifyListeners();
+
+  try {
+    final updatedUser = await _repo.updateUser(
+      user,
+      name: nameCtrl.text.trim(),
+      email: emailCtrl.text.trim(),
+      phone: phoneCtrl.text.trim(),
+      imageFile: newImage,
+    );
+
+    // 👉 Update UserProvider so UI updates
+    // _userProvider.setUser(updatedUser);
+
+    isLoading = false;
     notifyListeners();
-
-    try {
-      await _repo.updateUser(
-        userId as UserModel,
-        name: nameCtrl.text.trim(),
-        email: emailCtrl.text.trim(),
-        phone: phoneCtrl.text.trim(),
-        imageFile: newImage,
-      );
-
-      isLoading = false;
-      notifyListeners();
-      return true;
-    } catch (e) {
-      isLoading = false;
-      notifyListeners();
-      return false;
-    }
+    return true;
+  } catch (e) {
+    log(e.toString());
+    isLoading = false;
+    notifyListeners();
+    return false;
   }
+}
+
 
   // CLEANUP
   void disposeControllers() {

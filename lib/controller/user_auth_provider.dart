@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/user_model.dart';
-import '../services/auth_controller.dart';
+import '../services/auth_services.dart';
 
 class UserAuthProvider extends ChangeNotifier {
   // internal states
@@ -21,7 +21,7 @@ class UserAuthProvider extends ChangeNotifier {
   String? get currentUserId => firebaseUser?.uid;
 
   // REGISTER
-  Future<AuthResult> registerUser({
+  Future<AuthResult>registerUser({
     required String name,
     required String email,
     required String phone,
@@ -109,8 +109,5 @@ class UserAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setUser(UserModel user) {
-    _user = user;
-    notifyListeners();
-  }
+
 }

@@ -1,21 +1,21 @@
 import 'dart:async';
-import 'package:autocare/contollers/add_vehicle_form_provider.dart';
-import 'package:autocare/contollers/booking_form_provider.dart';
-import 'package:autocare/contollers/edit_profile_provider.dart';
-import 'package:autocare/contollers/home_nav_provider.dart';
-import 'package:autocare/contollers/login_form_provider.dart';
-import 'package:autocare/contollers/register_form_provider.dart';
+import 'package:autocare/controller/add_vehicle_form_provider.dart';
+import 'package:autocare/controller/booking_form_provider.dart';
+import 'package:autocare/controller/booking_provider.dart';
+import 'package:autocare/controller/edit_profile_provider.dart';
+import 'package:autocare/controller/home_nav_provider.dart';
+import 'package:autocare/controller/login_form_provider.dart';
+import 'package:autocare/controller/register_form_provider.dart';
+import 'package:autocare/controller/user_auth_provider.dart';
+import 'package:autocare/controller/user_provider.dart';
+import 'package:autocare/controller/vehicle_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'app.dart';
 import 'routes/app_routes.dart';  
-import 'contollers/user_auth_provider.dart';
-import 'contollers/user_provider.dart';
-import 'contollers/vehicle_provider.dart';
-import 'contollers/booking_provider.dart';
-import 'services/auth_controller.dart';
+import 'services/auth_services.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

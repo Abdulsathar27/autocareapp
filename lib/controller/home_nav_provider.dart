@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class HomeNavProvider extends ChangeNotifier {
-  int _index = 0;
-  int get index => _index;
+  int index = 0;
+ 
 
   void setIndex(int newIndex) {
-    _index = newIndex;
+    index = newIndex;
     notifyListeners();
+    
   }
 }

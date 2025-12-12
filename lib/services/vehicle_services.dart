@@ -1,8 +1,8 @@
+import 'package:autocare/controller/vehicle_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/firebase_keys.dart';
 import '../models/vehicle_model.dart';
-import '../contollers/vehicle_provider.dart';
 import '../core/utils/helpers.dart';
 
 class VehicleController {

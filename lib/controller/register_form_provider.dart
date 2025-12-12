@@ -14,4 +14,11 @@ class RegisterFormProvider extends ChangeNotifier {
     passCtrl.dispose();
     super.dispose();
   }
+  void clear() {
+    nameCtrl.clear();
+    emailCtrl.clear();
+    phoneCtrl.clear();
+    passCtrl.clear();
+    notifyListeners();
+  }
 }

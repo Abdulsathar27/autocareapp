@@ -10,4 +10,10 @@ class LoginFormProvider extends ChangeNotifier {
     passwordCtrl.dispose();
     super.dispose();
   }
+
+  void clear() {
+    emailCtrl.clear();
+    passwordCtrl.clear();
+    notifyListeners();
+  }
 }

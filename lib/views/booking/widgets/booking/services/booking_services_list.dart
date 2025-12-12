@@ -1,5 +1,5 @@
 import 'package:autocare/constants/app_sizes.dart';
-import 'package:autocare/contollers/booking_provider.dart';
+import 'package:autocare/controller/booking_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'booking_service_tile.dart';

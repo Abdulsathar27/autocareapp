@@ -1,9 +1,10 @@
 import 'dart:io';
+import 'package:autocare/controller/user_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../constants/firebase_keys.dart';
-import '../contollers/user_provider.dart';
+
 
 class UserController {
   final FirebaseStorage storage = FirebaseStorage.instance;
